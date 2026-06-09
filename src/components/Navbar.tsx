@@ -15,7 +15,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-4 md:top-6 left-0 w-full z-50 px-4 md:px-6 transition-all duration-500">
+    <header className="fixed top-4 md:top-3 left-0 w-full z-50 px-4 md:px-6 transition-all duration-500">
       <div
         className={`
           max-w-[1700px] mx-auto rounded-3xl md:rounded-full border transition-all duration-500
@@ -27,14 +27,14 @@ export default function Navbar() {
         `}
       >
         <div className="min-h-16 md:h-20 px-4 md:px-8 flex items-center justify-between gap-4">
-          <div>
-            <h1 className="text-white text-lg md:text-2xl font-black tracking-wider">
-              BARBER IA
-            </h1>
+          <div className="flex items-center gap-3">
+            <img
+              src="/logo.png"
+              alt="Barbershop"
+              className="w-25 h-25 md:w-20 md:h-20 object-contain"
+            />
 
-            <p className="text-yellow-500 text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em]">
-              PREMIUM BARBERSHOP
-            </p>
+            <span className="text-white font-black text-xl">Barbershop</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-25">
@@ -142,7 +142,7 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="bg-yellow-500 text-black px-5 py-3 rounded-full font-bold text-center"
             >
-              Reservar
+              Reservar Cita
             </a>
           </div>
         )}

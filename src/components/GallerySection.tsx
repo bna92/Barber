@@ -15,7 +15,7 @@ export default function GallerySection() {
     <section id="galeria" className="relative py-20 md:py-28 scroll-mt-32">
       <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1900px] mx-auto px-4 md:px-6">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-6">
         <div className="bg-black/35 backdrop-blur-xl border border-white/10 rounded-[28px] md:rounded-[40px] p-5 md:p-12">
           <div className="text-center mb-10 md:mb-16">
             <span className="text-yellow-500 uppercase tracking-[0.3em] text-xs md:text-sm">

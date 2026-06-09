@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 const whatsappNumber = "6671505736";
 
 const heroImages = [
+   "/logofondonegro.png",
   "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1200",
   "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?q=80&w=1200",
   "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1200",
@@ -21,7 +22,7 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-32 md:pt-0">
+    <section className="relative min-h-[95vh] flex items-center overflow-hidden pt-32 md:pt-0">
       <div
         className="absolute inset-0 bg-cover bg-center scale-105"
         style={{
@@ -36,7 +37,7 @@ export default function Hero() {
       <div className="absolute top-28 left-10 w-72 h-72 md:w-96 md:h-96 bg-yellow-500/20 blur-[120px]" />
       <div className="absolute bottom-20 right-10 w-72 h-72 md:w-96 md:h-96 bg-orange-500/20 blur-[120px]" />
 
-      <div className="relative z-10 w-full max-w-[1900px] mx-auto px-4 sm:px-6">
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16">
           <div className="text-center lg:text-left">
             <motion.span
@@ -60,7 +61,7 @@ export default function Hero() {
                 tracking-[0.25em]
               "
             >
-              ✦ BARBERÍA PREMIUM
+              ✦ PROFESSIONAL BARBERING
             </motion.span>
 
             <motion.h1
@@ -75,15 +76,13 @@ export default function Hero() {
   leading-[0.95]
   text-2xl
   sm:text-5xl
-  md:text-8xl
+  md:text-6xl
   max-w-5xl
   mx-auto
   lg:mx-0
 "
             >
-              Estilo que se nota,
-              <br />
-              confianza que se siente.
+              Más que un corte, una experiencia.
             </motion.h1>
 
             <motion.p
@@ -102,9 +101,8 @@ export default function Hero() {
                 leading-relaxed
               "
             >
-              Cortes modernos, barba definida y atención profesional para que
-              salgas con una imagen limpia, segura y lista para cualquier
-              ocasión.
+              Cortes, coloración y cuidado personal con atención profesional
+              para ayudarte a lucir y sentirte mejor en cada ocasión.
             </motion.p>
 
             <motion.div
@@ -191,7 +189,7 @@ export default function Hero() {
     w-full
     h-[320px]
     sm:h-[420px]
-    lg:h-[620px]
+    lg:h-[420px]
     rounded-[32px]
     lg:rounded-[48px]
     overflow-hidden
@@ -226,15 +224,15 @@ export default function Hero() {
     left-3
     right-3
 
-    md:bottom-8
-    md:left-8
-    md:right-8
+    md:bottom-5
+    md:left-5 
+    md:right-50
   "
               >
                 <div
                   className="
-    bg-black/60
-    backdrop-blur-xl
+    bg-black/20
+    
     border
     border-white/10
 
@@ -246,7 +244,7 @@ export default function Hero() {
   "
                 >
                   <p className="text-yellow-400 font-bold text-[10px] md:text-sm tracking-widest">
-                    EXPERIENCIA PREMIUM
+                    EXPERIENCIA PERSONALIZADA
                   </p>
 
                   <p className="text-white text-sm md:text-2xl font-black mt-1 md:mt-2">

@@ -29,7 +29,7 @@ export default function Testimonials() {
 
       <div className="absolute bottom-0 left-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1900px] mx-auto px-6">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6">
 
         <div className="text-center mb-16">
 

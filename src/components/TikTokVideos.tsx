@@ -39,14 +39,14 @@ export default function TikTokVideos() {
     >
       <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1900px] mx-auto px-4 md:px-6">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-6">
         <div className="bg-black/35 backdrop-blur-xl border border-white/10 rounded-[28px] md:rounded-[40px] p-5 md:p-12">
           <div className="text-center mb-10 md:mb-16">
             <span className="text-yellow-500 uppercase tracking-[0.3em] text-xs md:text-sm">
               Videos TikTok
             </span>
             <h2 className="text-3xl md:text-5xl font-black text-white mt-4">
-              Barbería IA en redes
+              Barbershop en redes
             </h2>
 
             <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-sm md:text-base">
@@ -100,7 +100,7 @@ export default function TikTokVideos() {
                     preload="metadata"
                     className="
       w-full
-      aspect-[9/16]
+      aspect-[9/10]
       object-cover
       bg-black
     "

@@ -79,7 +79,7 @@ export default function AvailableHours() {
     >
       <div className="absolute top-20 left-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1900px] mx-auto px-4 md:px-8">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-8">
         <motion.div
           animate={{ y: [0, -10, 0] }}
           transition={{

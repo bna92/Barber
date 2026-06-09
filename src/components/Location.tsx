@@ -4,7 +4,7 @@ export default function Location() {
       id="ubicacion"
       
     >
-      <div className="max-w-[1900px] mx-auto px-6">
+      <div className="max-w-[1200px] mx-auto px-6">
 
         <div className="text-center mb-16">
 
