@@ -15,6 +15,7 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -51,15 +52,20 @@ export default function ProductDetailPage() {
   const currentImage = images[currentImageIndex];
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
-    );
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    );
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    setShowNotification(true);
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
   };
 
   return (
@@ -75,6 +81,24 @@ export default function ProductDetailPage() {
       <div className="fixed inset-0 -z-10 bg-black/90" />
 
       <Navbar />
+
+      {showNotification && (
+        <div className="fixed top-24 right-4 z-[9999] bg-green-600 border border-green-400 text-white px-5 py-4 rounded-2xl shadow-2xl animate-slide-in">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+              <span className="text-green-600 font-bold">✓</span>
+            </div>
+
+            <div>
+              <p className="font-semibold">Producto agregado al carrito</p>
+
+              <p className="text-sm text-green-100">
+                Ya puedes finalizar tu compra
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section className="pt-36 pb-20 px-4">
         <div className="max-w-6xl mx-auto">
@@ -157,7 +181,7 @@ export default function ProductDetailPage() {
               </p>
 
               <button
-                onClick={() => addToCart(product)}
+                onClick={handleAddToCart}
                 className="w-full bg-yellow-500 text-black py-4 rounded-2xl font-black hover:bg-yellow-400 transition cursor-pointer"
               >
                 Agregar al carrito

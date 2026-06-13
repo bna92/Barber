@@ -82,8 +82,20 @@ export default function Products() {
   return (
     <section id="productos" className="py-20 bg-black text-white">
       {showNotification && (
-        <div className="fixed top-28 right-6 z-[9999] bg-green-500 text-white px-6 py-4 rounded-2xl shadow-2xl font-bold animate-pulse">
-          ✅ Producto agregado al carrito
+        <div className="fixed top-24 right-4 z-[9999] bg-green-600 border border-green-400 text-white px-5 py-4 rounded-2xl shadow-2xl animate-slide-in">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+              <span className="text-green-600 font-bold">✓</span>
+            </div>
+
+            <div>
+              <p className="font-semibold">Producto agregado al carrito</p>
+
+              <p className="text-sm text-green-100">
+                Ya puedes finalizar tu compra
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
