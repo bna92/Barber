@@ -41,7 +41,7 @@ export default function Navbar() {
             <span className="text-white font-black text-xl">Barbershop</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-25">
+          <nav className="hidden md:flex items-center gap-15">
             <HashLink
               smooth
               to="/#servicios"
