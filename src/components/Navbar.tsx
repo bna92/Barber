@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+import { useCart } from "../context/CartContext";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,7 +31,7 @@ export default function Navbar() {
         `}
       >
         <div className="min-h-16 md:h-20 px-4 md:px-8 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
             <img
               src="/logo.png"
               alt="Barbershop"
@@ -35,43 +39,67 @@ export default function Navbar() {
             />
 
             <span className="text-white font-black text-xl">Barbershop</span>
-          </div>
+          </Link>
 
           <nav className="hidden md:flex items-center gap-25">
-            <a
-              href="#servicios"
+            <HashLink
+              smooth
+              to="/#servicios"
               className="text-white/80 hover:text-yellow-400 transition"
             >
               Servicios
-            </a>
+            </HashLink>
 
-            <a
-              href="#horarios"
+            <Link
+              to="/productos"
+              className="text-white/80 hover:text-yellow-400 transition"
+            >
+              Productos
+            </Link>
+
+            <HashLink
+              smooth
+              to="/#horarios"
               className="text-white/80 hover:text-yellow-400 transition"
             >
               Horarios
-            </a>
+            </HashLink>
 
-            <a
-              href="#ubicacion"
+            <HashLink
+              smooth
+              to="/#ubicacion"
               className="text-white/80 hover:text-yellow-400 transition"
             >
               Ubicación
-            </a>
+            </HashLink>
 
-            <a
-              href="#galeria"
+            <HashLink
+              smooth
+              to="/#galeria"
               className="text-white/80 hover:text-yellow-400 transition"
             >
               Galería
-            </a>
+            </HashLink>
 
-            <a
-              href="#tiktok"
+            <HashLink
+              smooth
+              to="/#tiktok"
               className="text-white/80 hover:text-yellow-400 transition"
             >
               Videos
-            </a>
+            </HashLink>
+
+            <Link
+              to="/carrito"
+              className="relative flex items-center gap-2 text-white/80 hover:text-yellow-400 transition"
+            >
+              🛒 Carrito
+              {totalItems > 0 && (
+                <span className="absolute -top-3 -right-5 bg-red-600 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
           </nav>
 
           <div className="hidden sm:flex">
@@ -85,55 +113,92 @@ export default function Navbar() {
             </a>
           </div>
 
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden text-white text-3xl"
-          >
-            {open ? "×" : "☰"}
-          </button>
+          <div className="md:hidden flex items-center gap-4">
+            <Link to="/carrito" className="relative text-white text-2xl">
+              🛒
+              {totalItems > 0 && (
+                <span className="absolute -top-3 -right-4 bg-red-600 text-white min-w-[22px] h-5 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+
+            <button
+              onClick={() => setOpen(!open)}
+              className="text-white text-3xl cursor-pointer"
+            >
+              {open ? "×" : "☰"}
+            </button>
+          </div>
         </div>
 
         {open && (
           <div className="md:hidden px-5 pb-5 flex flex-col gap-4">
-            <a
+            <HashLink
+              smooth
               onClick={() => setOpen(false)}
-              href="#servicios"
+              to="/#servicios"
               className="text-white/80"
             >
               Servicios
-            </a>
+            </HashLink>
 
-            <a
+            <Link
               onClick={() => setOpen(false)}
-              href="#horarios"
+              to="/productos"
+              className="text-white/80"
+            >
+              Productos
+            </Link>
+
+            <HashLink
+              smooth
+              onClick={() => setOpen(false)}
+              to="/#horarios"
               className="text-white/80"
             >
               Horarios
-            </a>
+            </HashLink>
 
-            <a
+            <HashLink
+              smooth
               onClick={() => setOpen(false)}
-              href="#ubicacion"
+              to="/#ubicacion"
               className="text-white/80"
             >
               Ubicación
-            </a>
+            </HashLink>
 
-            <a
+            <HashLink
+              smooth
               onClick={() => setOpen(false)}
-              href="#galeria"
+              to="/#galeria"
               className="text-white/80"
             >
               Galería
-            </a>
+            </HashLink>
 
-            <a
+            <HashLink
+              smooth
               onClick={() => setOpen(false)}
-              href="#tiktok"
+              to="/#tiktok"
               className="text-white/80"
             >
               Videos
-            </a>
+            </HashLink>
+
+            <Link
+              onClick={() => setOpen(false)}
+              to="/carrito"
+              className="relative flex items-center gap-2 text-white/80 hover:text-yellow-400 transition"
+            >
+              🛒 Carrito
+              {totalItems > 0 && (
+                <span className="absolute -top-3 left-24 bg-red-600 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
 
             <a
               onClick={() => setOpen(false)}

@@ -13,8 +13,6 @@ import Footer from "../components/Footer";
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
-      {/* Fondo global */}
-
       <div
         className="fixed inset-0 -z-20 bg-cover bg-center"
         style={{
@@ -22,8 +20,6 @@ export default function Home() {
             "url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=1920')",
         }}
       />
-
-      {/* Overlay global */}
 
       <div className="fixed inset-0 -z-10 bg-black/85" />
 
@@ -40,8 +36,6 @@ export default function Home() {
       <AvailableHours />
 
       <Testimonials />
-
-      
 
       <Location />
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
 
 import { db } from "../services/firebase";
+import { seedProducts } from "../services/seedProducts";
 
 interface Horario {
   disponible: boolean;
@@ -179,6 +180,15 @@ export default function Admin() {
             }
           >
             {botActivo ? "🟢 Bot encendido" : "🔴 Bot apagado"}
+          </button>
+        </div>
+
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={seedProducts}
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-2xl font-bold"
+          >
+            Subir productos a Firebase
           </button>
         </div>
 
