@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
@@ -7,6 +8,26 @@ import CartPage from "./pages/CartPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 
 import { Toaster } from "sonner";
+
+function RedirectOnNewSession() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const sessionStarted = sessionStorage.getItem("sessionStarted");
+
+    if (!sessionStarted) {
+      sessionStorage.setItem("sessionStarted", "true");
+
+      if (location.pathname !== "/") {
+        navigate("/", { replace: true });
+      }
+    }
+  }, [location.pathname, navigate]);
+
+  return null;
+}
+
 
 function App() {
   return (
