@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { db } from "../services/firebase";
 import { Product } from "../types/product";
 import { useCart } from "../context/CartContext";
+import { toast } from "sonner";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -15,7 +16,6 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -61,11 +61,16 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     addToCart(product);
-    setShowNotification(true);
 
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 2000);
+    toast.success("Producto agregado al carrito", {
+      description: product.nombre,
+      action: {
+        label: "Ver carrito",
+        onClick: () => {
+          window.location.href = "/carrito";
+        },
+      },
+    });
   };
 
   return (
@@ -82,23 +87,6 @@ export default function ProductDetailPage() {
 
       <Navbar />
 
-      {showNotification && (
-        <div className="fixed top-24 right-4 z-[9999] bg-green-600 border border-green-400 text-white px-5 py-4 rounded-2xl shadow-2xl animate-slide-in">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-              <span className="text-green-600 font-bold">✓</span>
-            </div>
-
-            <div>
-              <p className="font-semibold">Producto agregado al carrito</p>
-
-              <p className="text-sm text-green-100">
-                Ya puedes finalizar tu compra
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       <section className="pt-36 pb-20 px-4">
         <div className="max-w-6xl mx-auto">

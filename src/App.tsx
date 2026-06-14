@@ -6,9 +6,19 @@ import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 
+import { Toaster } from "sonner";
+
 function App() {
   return (
     <BrowserRouter>
+      <Toaster
+        position="top-center"
+        richColors
+        closeButton
+        duration={2500}
+        expand={true}
+      />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/productos" element={<ProductsPage />} />

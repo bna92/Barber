@@ -4,6 +4,8 @@ import { db } from "../services/firebase";
 import { Product } from "../types/product";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { motion } from "motion/react";
 
 const PRODUCTS_PER_PAGE = 6;
 
@@ -13,7 +15,6 @@ export default function Products() {
   const [categoriaActiva, setCategoriaActiva] = useState("Todos");
   const [currentPage, setCurrentPage] = useState(1);
   const { addToCart } = useCart();
-  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -62,43 +63,20 @@ export default function Products() {
 
   const handleAddToCart = (product: Product) => {
     addToCart(product);
-    setShowNotification(true);
 
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 2000);
+    toast.success("Producto agregado al carrito", {
+      description: `${product.nombre} ya está en tu carrito`,
+      action: {
+        label: "Ver carrito",
+        onClick: () => {
+          window.location.href = "/carrito";
+        },
+      },
+    });
   };
-
-  if (loading) {
-    return (
-      <section className="py-20 bg-black text-white">
-        <h2 className="text-center text-3xl font-bold">
-          Cargando productos...
-        </h2>
-      </section>
-    );
-  }
 
   return (
     <section id="productos" className="py-20 bg-black text-white">
-      {showNotification && (
-        <div className="fixed top-24 right-4 z-[9999] bg-green-600 border border-green-400 text-white px-5 py-4 rounded-2xl shadow-2xl animate-slide-in">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-              <span className="text-green-600 font-bold">✓</span>
-            </div>
-
-            <div>
-              <p className="font-semibold">Producto agregado al carrito</p>
-
-              <p className="text-sm text-green-100">
-                Ya puedes finalizar tu compra
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-4">Productos</h2>
 
@@ -129,10 +107,23 @@ export default function Products() {
         ) : (
           <>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {productosPaginados.map((product) => (
-                <div
+              {productosPaginados.map((product, index) => (
+                <motion.div
                   key={product.id}
-                  className="bg-gray-900 rounded-2xl overflow-hidden border border-white/10"
+                  initial={{ opacity: 0, y: 40, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  whileHover={{
+                    y: -12,
+                    scale: 1.04,
+                    boxShadow: "0 25px 60px rgba(234, 179, 8, 0.25)",
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{
+                    duration: 0.35,
+                    delay: index * 0.08,
+                    ease: "easeOut",
+                  }}
+                  className="bg-gray-900 rounded-2xl overflow-hidden border border-white/10 hover:border-yellow-400/60 transition-colors"
                 >
                   <Link to={`/productos/${product.id}`}>
                     <img
@@ -155,14 +146,16 @@ export default function Products() {
 
                     <p className="text-2xl font-bold mt-4">${product.precio}</p>
 
-                    <button
+                    <motion.button
+                      whileTap={{ scale: 0.96 }}
+                      whileHover={{ scale: 1.02 }}
                       onClick={() => handleAddToCart(product)}
                       className="mt-4 w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition cursor-pointer"
                     >
                       Agregar al carrito
-                    </button>
+                    </motion.button>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
