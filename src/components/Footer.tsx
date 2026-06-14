@@ -30,7 +30,7 @@ export default function Footer() {
           <div className="grid md:grid-cols-3 gap-10">
             <div>
               <h3 className="text-neutral-950 text-3xl font-black">
-                BARBERSHOP
+                KAM BARBER SALÓN
               </h3>
 
               <p className="text-neutral-600 mt-4">

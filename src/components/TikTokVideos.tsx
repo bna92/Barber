@@ -1,7 +1,7 @@
 const videos = [
   {
-    user: "barbershop",
-    profile: "https://www.tiktok.com/@barbershop",
+    user: "KAM BARBER SALÓN",
+    profile: "https://www.tiktok.com/@KAM BARBER SALÓN",
     title: "Corte caballero moderno",
     description:
       "Corte moderno con acabado profesional, estilo limpio y fresco para cualquier ocasión.",
@@ -10,8 +10,8 @@ const videos = [
     link: "https://www.tiktok.com/@usuario/video/VIDEO_ID",
   },
   {
-    user: "barbershop",
-    profile: "https://www.tiktok.com/@barbershop",
+    user: "KAM BARBER SALÓN",
+    profile: "https://www.tiktok.com/@KAM BARBER SALÓN",
     title: "Corte dama premium",
     description:
       "Diseño personalizado para resaltar tu estilo con un acabado elegante.",
@@ -20,8 +20,8 @@ const videos = [
     link: "https://www.tiktok.com/@usuario/video/VIDEO_ID",
   },
   {
-    user: "barbershop",
-    profile: "https://www.tiktok.com/@barbershop",
+    user: "KAM BARBER SALÓN",
+    profile: "https://www.tiktok.com/@KAM BARBER SALÓN",
     title: "Barba y perfilado",
     description:
       "Perfilado de barba con acabado limpio, definido y profesional.",
@@ -49,7 +49,7 @@ export default function TikTokVideos() {
             </span>
 
             <h2 className="text-3xl md:text-5xl font-black text-neutral-950 mt-4">
-              Barbershop en redes
+              KAM BARBER SALÓN en redes
             </h2>
 
             <p className="text-neutral-600 mt-4 max-w-2xl mx-auto text-sm md:text-base">
