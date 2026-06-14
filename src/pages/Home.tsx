@@ -4,44 +4,53 @@ import TikTokVideos from "../components/TikTokVideos";
 import Services from "../components/Services";
 import GallerySection from "../components/GallerySection";
 import WhatsAppButton from "../components/WhatsAppButton";
-import AvailableHours from "../components/AvailableHours";
 import Location from "../components/Location";
 import Socials from "../components/Socials";
-import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
 
 export default function Home() {
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.setProperty("--mouse-x", `${e.clientX}px`);
+    e.currentTarget.style.setProperty("--mouse-y", `${e.clientY}px`);
+  };
   return (
-    <main className="relative min-h-screen overflow-hidden text-white">
+    <main
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen bg-[#faf7f2]"
+    >
+      {/* Spotlight global */}
       <div
-        className="fixed inset-0 -z-20 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=1920')",
-        }}
+        className="
+          pointer-events-none
+          fixed
+          inset-0
+          z-[1]
+          opacity-100
+          [background:radial-gradient(520px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(234,179,8,0.12),transparent_45%)]
+        "
       />
 
-      <div className="fixed inset-0 -z-10 bg-black/85" />
+      <div className="fixed left-0 top-0 w-[600px] h-[600px] bg-yellow-500/10 blur-[180px] pointer-events-none" />
 
-      <Navbar />
+      <div className="fixed right-0 bottom-0 w-[600px] h-[600px] bg-orange-400/10 blur-[180px] pointer-events-none" />
 
-      <Hero />
+      <div className="relative z-[2]">
+        <Navbar />
 
-      <TikTokVideos />
+        <Hero />
 
-      <GallerySection />
+        <Services />
 
-      <Services />
+        <GallerySection />
 
-      <AvailableHours />
+        <TikTokVideos />
 
-      <Testimonials />
+        <Location />
 
-      <Location />
+        <Socials />
 
-      <Socials />
-
-      <Footer />
+        <Footer />
+      </div>
 
       <WhatsAppButton />
     </main>

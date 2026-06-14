@@ -12,21 +12,25 @@ const images = [
 export default function GallerySection() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   return (
-    <section id="galeria" className="relative py-20 md:py-28 scroll-mt-32">
+    <section
+      id="galeria"
+      className="relative py-16 md:py-10 scroll-mt-32 overflow-hidden"
+    >
       <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
+      <div className="absolute right-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-6">
-        <div className="bg-black/35 backdrop-blur-xl border border-white/10 rounded-[28px] md:rounded-[40px] p-5 md:p-12">
+      <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-6">
+        <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-xl shadow-black/5">
           <div className="text-center mb-10 md:mb-16">
-            <span className="text-yellow-500 uppercase tracking-[0.3em] text-xs md:text-sm">
+            <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
               Galería
             </span>
 
-            <h2 className="text-3xl md:text-5xl font-black text-white mt-4">
+            <h2 className="text-3xl md:text-5xl font-black text-neutral-950 mt-4">
               Nuestros Trabajos
             </h2>
 
-            <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-sm md:text-base">
+            <p className="text-neutral-600 mt-4 max-w-2xl mx-auto text-sm md:text-base">
               Algunos de los estilos y cortes realizados por nuestros
               profesionales.
             </p>
@@ -54,18 +58,24 @@ export default function GallerySection() {
                 key={image}
                 onClick={() => setSelectedImage(image)}
                 className="
-    min-w-[85%]
-    sm:min-w-[60%]
-    md:min-w-0
-    snap-center
-    overflow-hidden
-    rounded-[28px]
-    md:rounded-[32px]
-    border
-    border-white/10
-    group
-    cursor-pointer
-  "
+                  min-w-[85%]
+                  sm:min-w-[60%]
+                  md:min-w-0
+                  snap-center
+                  overflow-hidden
+                  rounded-[28px]
+                  md:rounded-[32px]
+                  border
+                  border-neutral-200
+                  bg-white
+                  shadow-xl
+                  shadow-black/10
+                   hover:border-yellow-500/50
+                  md:hover:-translate-y-3
+                  hover:shadow-[0_25px_60px_rgba(234,179,8,0.18)]
+                  group
+                  cursor-pointer
+                "
               >
                 <img
                   src={image}
@@ -76,7 +86,7 @@ export default function GallerySection() {
             ))}
           </div>
 
-          <p className="md:hidden text-center text-gray-400 text-xs mt-3">
+          <p className="md:hidden text-center text-neutral-500 text-xs mt-3">
             Desliza hacia los lados para ver más trabajos →
           </p>
         </div>
@@ -86,27 +96,29 @@ export default function GallerySection() {
         <div
           onClick={() => setSelectedImage(null)}
           className="
-      fixed
-      inset-0
-      z-[9999]
-      bg-black/90
-      flex
-      items-center
-      justify-center
-      p-4
-      cursor-pointer
-    "
+            fixed
+            inset-0
+            z-[9999]
+            bg-black/80
+            backdrop-blur-md
+            flex
+            items-center
+            justify-center
+            p-4
+            cursor-pointer
+          "
         >
           <button
             onClick={() => setSelectedImage(null)}
             className="
-        absolute
-        top-5
-        right-5
-        text-white
-        text-5xl
-        font-light
-      "
+              absolute
+              top-5
+              right-5
+              text-white
+              text-5xl
+              font-light
+              cursor-pointer
+            "
           >
             ×
           </button>
@@ -115,11 +127,13 @@ export default function GallerySection() {
             src={selectedImage}
             alt="Imagen ampliada"
             className="
-        max-w-[95vw]
-        max-h-[90vh]
-        object-contain
-        rounded-2xl
-      "
+              max-w-[95vw]
+              max-h-[90vh]
+              object-contain
+              rounded-2xl
+              shadow-2xl
+              shadow-black/40
+            "
             onClick={(e) => e.stopPropagation()}
           />
         </div>

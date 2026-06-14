@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../services/firebase";
-import { Product } from "../types/product";
-import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 
-const PRODUCTS_PER_PAGE = 6;
+import { db } from "../services/firebase";
+import { Product } from "../types/product";
+import { useCart } from "../context/CartContext";
+
+const PRODUCTS_PER_PAGE = 9;
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -75,24 +76,31 @@ export default function Products() {
     });
   };
 
+  if (loading) {
+    return (
+      <section className="py-20">
+        <h2 className="text-center text-3xl font-black text-neutral-950">
+          Cargando productos...
+        </h2>
+      </section>
+    );
+  }
+
   return (
-    <section id="productos" className="py-20 bg-black text-white">
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-4">Productos</h2>
+    <section id="productos" className="relative py-8 md:py-12">
+      <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
+      <div className="absolute right-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[120px]" />
 
-        <p className="text-center text-gray-400 mb-12">
-          Productos profesionales para el cuidado de tu cabello y barba.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
+      <div className="relative z-10 max-w-[1300px] mx-auto px-4">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-8">
           {categorias.map((categoria) => (
             <button
               key={categoria}
               onClick={() => handleCategoria(categoria)}
               className={
                 categoriaActiva === categoria
-                  ? "bg-yellow-500 text-black px-5 py-2 rounded-full font-bold cursor-pointer"
-                  : "bg-white/10 text-white px-5 py-2 rounded-full hover:bg-white/20 transition cursor-pointer"
+                  ? "bg-neutral-950 text-white px-4 py-2 rounded-full text-sm font-bold cursor-pointer shadow-md shadow-black/10"
+                  : "bg-white text-neutral-700 border border-neutral-200 px-4 py-2 rounded-full text-sm hover:border-yellow-500/50 hover:text-yellow-700 transition cursor-pointer shadow-sm"
               }
             >
               {categoria}
@@ -101,58 +109,94 @@ export default function Products() {
         </div>
 
         {productosPaginados.length === 0 ? (
-          <p className="text-center text-gray-400">
+          <p className="text-center text-neutral-500">
             No hay productos disponibles en esta categoría.
           </p>
         ) : (
           <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
               {productosPaginados.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 40, scale: 0.96 }}
+                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   whileHover={{
-                    y: -12,
-                    scale: 1.04,
-                    boxShadow: "0 25px 60px rgba(234, 179, 8, 0.25)",
+                    y: -4,
+                    scale: 1.01,
+                    boxShadow: "0 15px 35px rgba(234, 179, 8, 0.14)",
                   }}
-                  whileTap={{ scale: 0.98 }}
+                  whileTap={{ scale: 0.99 }}
                   transition={{
-                    duration: 0.35,
-                    delay: index * 0.08,
+                    duration: 0.25,
+                    delay: index * 0.04,
                     ease: "easeOut",
                   }}
-                  className="bg-gray-900 rounded-2xl overflow-hidden border border-white/10 hover:border-yellow-400/60 transition-colors"
+                  className="
+                    bg-white
+                    rounded-xl
+                    overflow-hidden
+                    border
+                    border-neutral-200
+                    hover:border-yellow-500/40
+                    shadow-md
+                    shadow-black/5
+                    transition-all
+                  "
                 >
                   <Link to={`/productos/${product.id}`}>
-                    <img
-                      src={product.imagen}
-                      alt={product.nombre}
-                      className="w-full h-40 md:h-64 object-cover cursor-pointer"
-                    />
+                    <div className="bg-neutral-50 overflow-hidden">
+                      <motion.img
+                        src={product.imagen}
+                        alt={product.nombre}
+                        whileHover={{ scale: 1.06 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full h-32 md:h-40 object-cover cursor-pointer"
+                      />
+                    </div>
                   </Link>
 
-                  <div className="p-3 md:p-5">
+                  <div className="p-3">
                     <Link to={`/productos/${product.id}`}>
-                      <h3 className="text-lg md:text-xl font-bold hover:text-yellow-400 transition cursor-pointer">
+                      <h3 className="text-sm md:text-base font-bold text-neutral-900 hover:text-yellow-700 transition cursor-pointer line-clamp-2 min-h-[40px]">
                         {product.nombre}
                       </h3>
                     </Link>
 
-                    <p className="text-gray-400 mt-2 text-sm line-clamp-2">
+                    <p className="text-neutral-500 mt-1 text-xs line-clamp-2 min-h-[32px]">
                       {product.descripcion}
                     </p>
 
-                    <p className="text-2xl font-bold mt-4">${product.precio}</p>
+                    <div className="mt-3">
+                      <span className="text-xs text-green-600 font-semibold">
+                        Stock: {product.stock}
+                      </span>
+
+                      <p className="text-lg md:text-xl font-black text-neutral-950 leading-tight">
+                        ${product.precio}
+                      </p>
+                    </div>
 
                     <motion.button
                       whileTap={{ scale: 0.96 }}
                       whileHover={{ scale: 1.02 }}
                       onClick={() => handleAddToCart(product)}
-                      className="mt-4 w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-yellow-400 transition cursor-pointer"
+                      className="
+                        mt-3
+                        w-full
+                        bg-neutral-950
+                        text-white
+                        py-2.5
+                        rounded-lg
+                        text-sm
+                        font-bold
+                        hover:bg-yellow-600
+                        transition
+                        cursor-pointer
+                        shadow-md
+                        shadow-black/10
+                      "
                     >
-                      Agregar al carrito
+                      Agregar
                     </motion.button>
                   </div>
                 </motion.div>
@@ -160,14 +204,14 @@ export default function Products() {
             </div>
 
             {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-3 mt-12 flex-wrap">
+              <div className="flex justify-center items-center gap-3 mt-10 flex-wrap">
                 <button
                   onClick={() => setCurrentPage((prev) => prev - 1)}
                   disabled={currentPage === 1}
                   className={
                     currentPage === 1
-                      ? "px-4 py-2 rounded-full bg-white/5 text-gray-500 cursor-not-allowed"
-                      : "px-4 py-2 rounded-full bg-white/10 text-white hover:bg-yellow-500 hover:text-black transition cursor-pointer"
+                      ? "px-4 py-2 rounded-full bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                      : "px-4 py-2 rounded-full bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-950 hover:text-white transition cursor-pointer shadow-sm"
                   }
                 >
                   Anterior
@@ -179,8 +223,8 @@ export default function Products() {
                     onClick={() => setCurrentPage(index + 1)}
                     className={
                       currentPage === index + 1
-                        ? "w-10 h-10 rounded-full bg-yellow-500 text-black font-bold cursor-pointer"
-                        : "w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 transition cursor-pointer"
+                        ? "w-10 h-10 rounded-full bg-neutral-950 text-white font-bold cursor-pointer shadow-lg shadow-black/10"
+                        : "w-10 h-10 rounded-full bg-white border border-neutral-200 text-neutral-700 hover:bg-yellow-600 hover:text-white transition cursor-pointer"
                     }
                   >
                     {index + 1}
@@ -192,8 +236,8 @@ export default function Products() {
                   disabled={currentPage === totalPages}
                   className={
                     currentPage === totalPages
-                      ? "px-4 py-2 rounded-full bg-white/5 text-gray-500 cursor-not-allowed"
-                      : "px-4 py-2 rounded-full bg-white/10 text-white hover:bg-yellow-500 hover:text-black transition cursor-pointer"
+                      ? "px-4 py-2 rounded-full bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                      : "px-4 py-2 rounded-full bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-950 hover:text-white transition cursor-pointer shadow-sm"
                   }
                 >
                   Siguiente

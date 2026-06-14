@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { useCart } from "../context/CartContext";
+import { motion } from "framer-motion";
+import { GiFlame } from "react-icons/gi";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,11 +24,11 @@ export default function Navbar() {
     <header className="fixed top-4 md:top-3 left-0 w-full z-50 px-4 md:px-6 transition-all duration-500">
       <div
         className={`
-          max-w-[1700px] mx-auto rounded-3xl md:rounded-full border transition-all duration-500
+          max-w-[1250px] mx-auto rounded-3xl md:rounded-full border transition-all duration-500
           ${
             scrolled
-              ? "bg-black/80 backdrop-blur-2xl border-white/10 shadow-2xl"
-              : "bg-black/30 backdrop-blur-xl border-white/5"
+              ? "bg-white/90 backdrop-blur-2xl border-neutral-200 shadow-xl shadow-black/5"
+              : "bg-white/65 backdrop-blur-xl border-white/70 shadow-lg shadow-black/5"
           }
         `}
       >
@@ -38,45 +40,24 @@ export default function Navbar() {
               className="w-25 h-25 md:w-20 md:h-20 object-contain"
             />
 
-            <span className="text-white font-black text-xl">Barbershop</span>
+            <span className="text-neutral-950 font-black text-xl">
+              Barbershop
+            </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-15">
+          <nav className="hidden md:flex items-center gap-10 xl:gap-14">
             <HashLink
               smooth
               to="/#servicios"
-              className="text-white/80 hover:text-yellow-400 transition"
+              className="text-neutral-700 hover:text-yellow-700 font-medium transition"
             >
               Servicios
-            </HashLink>
-
-            <Link
-              to="/productos"
-              className="text-white/80 hover:text-yellow-400 transition"
-            >
-              Productos
-            </Link>
-
-            <HashLink
-              smooth
-              to="/#horarios"
-              className="text-white/80 hover:text-yellow-400 transition"
-            >
-              Horarios
-            </HashLink>
-
-            <HashLink
-              smooth
-              to="/#ubicacion"
-              className="text-white/80 hover:text-yellow-400 transition"
-            >
-              Ubicación
             </HashLink>
 
             <HashLink
               smooth
               to="/#galeria"
-              className="text-white/80 hover:text-yellow-400 transition"
+              className="text-neutral-700 hover:text-yellow-700 font-medium transition"
             >
               Galería
             </HashLink>
@@ -84,18 +65,29 @@ export default function Navbar() {
             <HashLink
               smooth
               to="/#tiktok"
-              className="text-white/80 hover:text-yellow-400 transition"
+              className="text-neutral-700 hover:text-yellow-700 font-medium transition"
             >
               Videos
             </HashLink>
 
+            <HashLink
+              smooth
+              to="/#ubicacion"
+              className="text-neutral-700 hover:text-yellow-700 font-medium transition"
+            >
+              Ubicación
+            </HashLink>
+
             <Link
               to="/carrito"
-              className="relative flex items-center gap-2 text-white/80 hover:text-yellow-400 transition"
+              className="relative flex items-center gap-2 text-neutral-700 hover:text-yellow-700 font-medium transition"
             >
-              🛒 Carrito
+              <span>Carrito</span>
+
+              <span className="text-lg">🛒</span>
+
               {totalItems > 0 && (
-                <span className="absolute -top-3 -right-5 bg-red-600 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
+                <span className="absolute -top-3 -right-5 bg-red-500 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
                   {totalItems}
                 </span>
               )}
@@ -103,21 +95,55 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden sm:flex">
-            <a
-              href="https://wa.me/52667TU_NUMERO"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gradient-to-r from-yellow-500 to-amber-400 text-black px-5 md:px-7 py-3 rounded-full font-bold hover:scale-105 transition-all duration-300 shadow-lg shadow-yellow-500/20"
+            <Link
+              to="/productos"
+              className="relative font-bold text-white transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 animate-pulse"
             >
-              Reservar Cita
-            </a>
+              <span
+                className="
+    absolute
+    inset-0
+    rounded-xl
+    bg-gradient-to-b
+    from-amber-300
+    to-yellow-700
+    blur-md
+    opacity-70
+  "
+              ></span>
+
+              <span
+                className="
+    relative
+    flex
+    items-center
+    justify-center
+    gap-2
+    rounded-xl
+    px-6
+    py-3
+    bg-gradient-to-r
+    from-amber-300
+    via-yellow-500
+    to-amber-700
+    border
+    border-yellow-100/50
+    shadow-lg
+    shadow-yellow-600/40
+    text-black
+    font-black
+  "
+              >
+                🔥 Productos
+              </span>
+            </Link>
           </div>
 
           <div className="md:hidden flex items-center gap-4">
-            <Link to="/carrito" className="relative text-white text-2xl">
+            <Link to="/carrito" className="relative text-neutral-950 text-2xl">
               🛒
               {totalItems > 0 && (
-                <span className="absolute -top-3 -right-4 bg-red-600 text-white min-w-[22px] h-5 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
+                <span className="absolute -top-3 -right-4 bg-red-500 text-white min-w-[22px] h-5 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
                   {totalItems}
                 </span>
               )}
@@ -125,7 +151,7 @@ export default function Navbar() {
 
             <button
               onClick={() => setOpen(!open)}
-              className="text-white text-3xl cursor-pointer"
+              className="text-neutral-950 text-3xl cursor-pointer"
             >
               {open ? "×" : "☰"}
             </button>
@@ -138,42 +164,16 @@ export default function Navbar() {
               smooth
               onClick={() => setOpen(false)}
               to="/#servicios"
-              className="text-white/80"
+              className="text-neutral-700 font-medium"
             >
               Servicios
-            </HashLink>
-
-            <Link
-              onClick={() => setOpen(false)}
-              to="/productos"
-              className="text-white/80"
-            >
-              Productos
-            </Link>
-
-            <HashLink
-              smooth
-              onClick={() => setOpen(false)}
-              to="/#horarios"
-              className="text-white/80"
-            >
-              Horarios
-            </HashLink>
-
-            <HashLink
-              smooth
-              onClick={() => setOpen(false)}
-              to="/#ubicacion"
-              className="text-white/80"
-            >
-              Ubicación
             </HashLink>
 
             <HashLink
               smooth
               onClick={() => setOpen(false)}
               to="/#galeria"
-              className="text-white/80"
+              className="text-neutral-700 font-medium"
             >
               Galería
             </HashLink>
@@ -182,33 +182,83 @@ export default function Navbar() {
               smooth
               onClick={() => setOpen(false)}
               to="/#tiktok"
-              className="text-white/80"
+              className="text-neutral-700 font-medium"
             >
               Videos
+            </HashLink>
+
+            <HashLink
+              smooth
+              onClick={() => setOpen(false)}
+              to="/#ubicacion"
+              className="text-neutral-700 font-medium"
+            >
+              Ubicación
             </HashLink>
 
             <Link
               onClick={() => setOpen(false)}
               to="/carrito"
-              className="relative flex items-center gap-2 text-white/80 hover:text-yellow-400 transition"
+              className="relative flex items-center gap-2 text-neutral-700 hover:text-yellow-700 transition font-medium"
             >
-              🛒 Carrito
+              Carrito
+              <span className="ml-1">🛒</span>
               {totalItems > 0 && (
-                <span className="absolute -top-3 left-24 bg-red-600 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
+                <span className="absolute -top-3 left-24 bg-red-500 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
                   {totalItems}
                 </span>
               )}
             </Link>
 
-            <a
-              onClick={() => setOpen(false)}
-              href="https://wa.me/52667TU_NUMERO"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-yellow-500 text-black px-5 py-3 rounded-full font-bold text-center"
+            <Link
+              to="/productos"
+              className="
+    relative
+    font-bold
+     text-white
+    animate-pulse
+    transition-all
+    duration-300
+  "
             >
-              Reservar Cita
-            </a>
+              <span
+                className="
+    absolute
+    inset-0
+    rounded-xl
+    bg-gradient-to-b
+    from-amber-300
+    to-yellow-700
+    blur-md
+    opacity-70
+  "
+              ></span>
+
+              <span
+                className="
+    relative
+    flex
+    items-center
+    justify-center
+    gap-2
+    rounded-xl
+    px-6
+    py-3
+    bg-gradient-to-r
+    from-amber-300
+    via-yellow-500
+    to-amber-700
+    border
+    border-yellow-100/50
+    shadow-lg
+    shadow-yellow-600/40
+    text-black
+    font-black
+  "
+              >
+                🔥 Productos
+              </span>
+            </Link>
           </div>
         )}
       </div>

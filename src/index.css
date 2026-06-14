@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
 html {
@@ -7,8 +8,12 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background: #111827;
-  font-family: Arial, Helvetica, sans-serif;
+  background: #faf7f2;
+  font-family: "Outfit", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 @keyframes marquee {

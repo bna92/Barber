@@ -10,6 +10,8 @@ const heroImages = [
   "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1200",
 ];
 
+const titleWords = ["Tu", "estilo", "elevado", "al,", "siguiente", "nivel."];
+
 export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -22,21 +24,13 @@ export default function Hero() {
 
     return () => clearInterval(interval);
   }, []);
-
-  const titleWords = ["Más", "que", "un", "corte,", "una", "experiencia."];
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const { currentTarget, clientX, clientY } = e;
-    const rect = currentTarget.getBoundingClientRect();
-
-    currentTarget.style.setProperty("--mouse-x", `${clientX - rect.left}px`);
-    currentTarget.style.setProperty("--mouse-y", `${clientY - rect.top}px`);
-  };
-
   return (
-    <section className="relative min-h-screen overflow-hidden bg-black text-white pt-28 lg:pt-0">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(234,179,8,0.22),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(245,158,11,0.18),transparent_35%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20" />
+    <section
+      className="relative min-h-screen overflow-hidden  text-neutral-950 pt-28 lg:pt-0"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.14),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(251,191,36,0.16),transparent_35%)]" />
+
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.035)_1px,transparent_1px)] bg-[size:72px_72px] opacity-30" />
 
       <div className="relative z-10 min-h-screen max-w-7xl mx-auto px-4 sm:px-6 flex items-center">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
@@ -45,28 +39,52 @@ export default function Hero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="inline-flex items-center gap-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-4 py-2 text-xs font-bold tracking-[0.25em] text-yellow-300"
+              className="inline-flex items-center gap-2 rounded-full border border-yellow-700/20 bg-white/70 px-4 py-2 text-xs font-bold tracking-[0.25em] text-yellow-700 shadow-sm backdrop-blur-xl"
             >
-              ✦ BARBERÍA PREMIUM
+              ✦ BEAUTY & BARBER EXPERIENCE
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 35 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.8 }}
+              initial="hidden"
+              animate="visible"
               className="mt-7 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.9] tracking-tight"
             >
-              Tu estilo,
-              <span className="block bg-gradient-to-r from-yellow-300 via-yellow-500 to-orange-400 bg-clip-text text-transparent">
-                elevado al siguiente nivel.
-              </span>
+              {titleWords.map((word, index) => (
+                <motion.span
+                  key={word + index}
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      y: 35,
+                      filter: "blur(10px)",
+                    },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      filter: "blur(0px)",
+                    },
+                  }}
+                  transition={{
+                    duration: 0.55,
+                    delay: index * 0.12,
+                    ease: "easeOut",
+                  }}
+                  className={
+                    index >= 4
+                      ? "inline-block mr-3 bg-gradient-to-r from-yellow-700 via-amber-500 to-orange-400 bg-clip-text text-transparent"
+                      : "inline-block mr-3"
+                  }
+                >
+                  {word}
+                </motion.span>
+              ))}
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.7 }}
-              className="mt-7 text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0"
+              transition={{ delay: 0.75, duration: 0.7 }}
+              className="mt-7 text-base sm:text-lg md:text-xl text-neutral-600 leading-relaxed max-w-2xl mx-auto lg:mx-0"
             >
               Cortes modernos, barba, coloración y cuidado personal con una
               experiencia profesional diseñada para que salgas impecable.
@@ -75,14 +93,14 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.7 }}
+              transition={{ delay: 0.9, duration: 0.7 }}
               className="mt-9 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <a
                 href={`https://wa.me/${whatsappNumber}?text=Hola,%20quiero%20agendar%20una%20cita`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center rounded-full bg-yellow-400 px-8 py-4 text-black font-black shadow-2xl shadow-yellow-500/25 transition hover:bg-yellow-300 hover:scale-[1.03]"
+                className="group inline-flex items-center justify-center rounded-full bg-neutral-950 px-8 py-4 text-white font-black shadow-2xl shadow-neutral-900/20 transition hover:bg-yellow-600 hover:scale-[1.03]"
               >
                 Reservar cita
                 <span className="ml-2 transition group-hover:translate-x-1">
@@ -92,7 +110,7 @@ export default function Hero() {
 
               <a
                 href="#servicios"
-                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-8 py-4 font-bold text-white backdrop-blur-xl transition hover:border-yellow-400/60 hover:bg-white/10"
+                className="inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white/70 px-8 py-4 font-bold text-neutral-950 shadow-sm backdrop-blur-xl transition hover:border-yellow-500 hover:bg-white"
               >
                 Ver servicios
               </a>
@@ -103,7 +121,7 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="relative order-first lg:order-last w-full max-w-sm mx-auto lg:max-w-none"
+            className="relative order-first lg:order-last w-full max-w-sm mx-auto mt-12 lg:mt-0 lg:max-w-none"
           >
             <motion.div
               animate={{
@@ -117,42 +135,45 @@ export default function Hero() {
               }}
               className="relative"
             >
-              <div className="absolute -inset-6 bg-yellow-500/25 blur-[90px] rounded-full" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-400 rounded-[42px] opacity-70 blur-sm" />
 
-              <div className="relative w-full h-[320px] sm:h-[420px] lg:h-[460px] rounded-[40px] overflow-hidden border border-yellow-500/30 bg-white/5 shadow-2xl shadow-yellow-500/20">
+              <div
+                className="
+    relative
+    w-full
+    h-[360px]
+    sm:h-[500px]
+    lg:h-[560px]
+    rounded-[40px]
+    overflow-hidden
+    bg-white
+    border
+    border-white
+  "
+              >
                 <motion.img
                   key={currentImage}
                   src={heroImages[currentImage]}
                   alt="Barbería premium"
                   initial={{ opacity: 0, scale: 1.15 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.9 }}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8, duration: 0.7 }}
-                  className="
-    absolute
-    bottom-4
-    left-4
-    right-4
-    bg-black/10
-    border
-    border-white/20
-    rounded-3xl
-    p-5
-  "
+                  className="absolute bottom-4 left-4 right-4 bg-white/15 border border-white/40 rounded-3xl p-5"
                 >
-                  <p className="text-yellow-400 font-bold text-xs tracking-widest">
+                  <p className="text-yellow-300 font-bold text-xs tracking-widest">
                     EXPERIENCIA PERSONALIZADA
                   </p>
 
-                  <p className="text-white text-xl md:text-2xl font-black mt-2">
+                  <p className="text-white text-xl md:text-2xl font-black mt-2 drop-shadow-lg">
                     Cada detalle cuenta en tu imagen.
                   </p>
 
@@ -163,8 +184,8 @@ export default function Hero() {
                         onClick={() => setCurrentImage(index)}
                         className={`h-2 rounded-full transition-all duration-500 ${
                           currentImage === index
-                            ? "w-8 bg-yellow-500"
-                            : "w-2 bg-white/40"
+                            ? "w-8 bg-white"
+                            : "w-2 bg-white/50"
                         }`}
                       />
                     ))}

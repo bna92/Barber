@@ -27,8 +27,8 @@ export default function WhatsAppButton() {
         bg-gradient-to-r
         from-green-500
         to-emerald-400
-        px-5
-        py-4
+        px-3
+        py-3
         text-white
         shadow-[0_0_35px_rgba(34,197,94,0.45)]
         transition-all

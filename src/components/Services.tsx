@@ -47,22 +47,23 @@ export default function Services() {
   return (
     <section
       id="servicios"
-      className="relative py-20 md:py-28 overflow-hidden scroll-mt-32"
+      className="relative py-16 md:py-10 overflow-hidden scroll-mt-32 "
     >
       <div className="absolute top-20 right-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
+      <div className="absolute left-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-6">
-        <div className="bg-black/35 backdrop-blur-xl border border-white/10 rounded-[28px] md:rounded-[40px] p-5 md:p-12">
+      <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-6">
+        <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-xl shadow-black/5">
           <div className="text-center mb-10 md:mb-16">
-            <span className="text-yellow-500 uppercase tracking-[0.3em] text-xs md:text-sm">
+            <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
               Servicios
             </span>
 
-            <h2 className="text-3xl md:text-5xl font-black text-white mt-4">
+            <h2 className="text-3xl md:text-5xl font-black text-neutral-950 mt-4">
               Nuestros Servicios
             </h2>
 
-            <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-sm md:text-base">
+            <p className="text-neutral-600 mt-4 max-w-2xl mx-auto text-sm md:text-base">
               Servicios diseñados para resaltar tu imagen y mantener tu estilo
               impecable.
             </p>
@@ -97,13 +98,14 @@ export default function Services() {
                   overflow-hidden
                   rounded-[28px]
                   md:rounded-[32px]
-                  bg-white/5
-                  backdrop-blur-xl
+                  bg-white/30
                   border
-                  border-white/10
-                  hover:border-yellow-500/40
+                  border-neutral-200
+                  shadow-xl
+                  shadow-black/10
+                  hover:border-yellow-500/50
                   md:hover:-translate-y-3
-                  hover:shadow-[0_0_40px_rgba(234,179,8,0.15)]
+                  hover:shadow-[0_25px_60px_rgba(234,179,8,0.18)]
                   transition-all
                   duration-500
                   group
@@ -117,16 +119,16 @@ export default function Services() {
 
                 <div className="p-5 md:p-6">
                   <div className="flex justify-between items-center gap-4">
-                    <h3 className="text-white text-xl md:text-2xl font-bold">
+                    <h3 className="text-neutral-950 text-xl md:text-2xl font-bold">
                       {service.title}
                     </h3>
 
-                    <span className="text-yellow-500 font-black text-lg md:text-xl shrink-0">
+                    <span className="text-yellow-700 font-black text-lg md:text-xl shrink-0">
                       {service.price}
                     </span>
                   </div>
 
-                  <p className="mt-4 text-gray-400 text-sm md:text-base">
+                  <p className="mt-4 text-neutral-600 text-sm md:text-base">
                     {service.description}
                   </p>
 
@@ -134,7 +136,7 @@ export default function Services() {
                     href="https://wa.me/526671234567?text=Hola,%20quiero%20agendar%20una%20cita"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-block bg-gradient-to-r from-yellow-500 to-amber-400 text-black font-bold px-6 py-3 rounded-full hover:scale-105 transition-all duration-300"
+                    className="mt-6 inline-block bg-neutral-950 text-white font-bold px-6 py-3 rounded-full hover:bg-yellow-600 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/10"
                   >
                     Reservar
                   </a>
@@ -143,7 +145,7 @@ export default function Services() {
             ))}
           </div>
 
-          <p className="md:hidden text-center text-gray-400 text-xs mt-3">
+          <p className="md:hidden text-center text-neutral-500 text-xs mt-3">
             Desliza hacia los lados para ver más servicios →
           </p>
         </div>

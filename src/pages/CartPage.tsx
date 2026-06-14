@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function CartPage() {
   const {
@@ -13,145 +14,203 @@ export default function CartPage() {
     clearCart,
   } = useCart();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.setProperty("--mouse-x", `${e.clientX}px`);
+    e.currentTarget.style.setProperty("--mouse-y", `${e.clientY}px`);
+  };
+
   const subtotal = total;
   const iva = subtotal * 0.16;
   const totalConIva = subtotal + iva;
 
   return (
-    <main className="relative min-h-screen text-white">
+    <main
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen bg-[#faf7f2] overflow-hidden"
+    >
       <div
-        className="fixed inset-0 -z-20 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=1920')",
-        }}
+        className="
+          pointer-events-none
+          fixed
+          inset-0
+          z-[1]
+          opacity-100
+          mix-blend-multiply
+          [background:radial-gradient(700px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(250,204,21,0.22),transparent_55%)]
+        "
       />
 
-      <div className="fixed inset-0 -z-10 bg-black/90" />
+      <div className="fixed left-0 top-0 w-[600px] h-[600px] bg-yellow-500/10 blur-[180px] pointer-events-none" />
+      <div className="fixed right-0 bottom-0 w-[600px] h-[600px] bg-orange-400/10 blur-[180px] pointer-events-none" />
 
-      <Navbar />
+      <div className="relative z-[2]">
+        <Navbar />
 
-      <section className="pt-36 pb-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <Link
-            to="/productos"
-            className="inline-flex items-center gap-2 mb-6 text-yellow-400 hover:text-yellow-300 font-bold cursor-pointer"
-          >
-            ← Volver a productos
-          </Link>
+        <section className="pt-32 md:pt-40 pb-10 md:pb-14 px-4">
+          <div className="max-w-[1200px] mx-auto">
+            <Link
+              to="/productos"
+              className="inline-flex items-center gap-2 mb-8 text-neutral-700 hover:text-yellow-700 font-bold transition"
+            >
+              ← Volver a productos
+            </Link>
 
-          <h1 className="text-4xl md:text-5xl font-black mb-10">
-            Carrito de compras
-          </h1>
+            <div className="text-center mb-10">
+              <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
+                Tu compra
+              </span>
 
-          {cart.length === 0 ? (
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
-              <p className="text-gray-300 mb-6">Tu carrito está vacío.</p>
+              <h1 className="text-4xl md:text-6xl font-black text-neutral-950 mt-4">
+                Carrito de compras
+              </h1>
 
-              <Link
-                to="/productos"
-                className="inline-block bg-yellow-500 text-black px-6 py-3 rounded-full font-bold"
-              >
-                Ver productos
-              </Link>
+              <p className="text-neutral-600 mt-4 max-w-2xl mx-auto">
+                Revisa tus productos antes de finalizar tu pedido.
+              </p>
             </div>
-          ) : (
-            <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-4">
-                {cart.map((item) => (
-                  <div
-                    key={item.id}
-                    className="bg-gray-900 border border-white/10 rounded-3xl p-4 flex gap-4"
-                  >
-                    <Link to={`/productos/${item.id}`}>
-                      <img
-                        src={item.imagen}
-                        alt={item.nombre}
-                        className="w-28 h-28 object-cover rounded-2xl cursor-pointer hover:scale-105 transition"
-                      />
-                    </Link>
 
-                    <div className="flex-1">
+            {cart.length === 0 ? (
+              <div className="bg-white/75 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-8 md:p-12 text-center shadow-xl shadow-black/5">
+                <p className="text-neutral-600 mb-6">
+                  Tu carrito está vacío.
+                </p>
+
+                <Link
+                  to="/productos"
+                  className="inline-flex bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition shadow-lg shadow-black/10"
+                >
+                  Ver productos
+                </Link>
+              </div>
+            ) : (
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-4">
+                  {cart.map((item) => (
+                    <div
+                      key={item.id}
+                      className="
+                        bg-white
+                        border
+                        border-neutral-200
+                        rounded-[24px]
+                        p-4
+                        flex
+                        gap-4
+                        shadow-lg
+                        shadow-black/5
+                      "
+                    >
                       <Link to={`/productos/${item.id}`}>
-                        <h2 className="text-xl font-bold hover:text-yellow-400 transition cursor-pointer">
-                          {item.nombre}
-                        </h2>
+                        <img
+                          src={item.imagen}
+                          alt={item.nombre}
+                          className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl cursor-pointer hover:scale-105 transition"
+                        />
                       </Link>
 
-                      <p className="text-gray-400 text-sm mt-1">
-                        {item.descripcion}
-                      </p>
+                      <div className="flex-1">
+                        <Link to={`/productos/${item.id}`}>
+                          <h2 className="text-lg md:text-xl font-black text-neutral-950 hover:text-yellow-700 transition cursor-pointer">
+                            {item.nombre}
+                          </h2>
+                        </Link>
 
-                      <p className="text-yellow-400 font-black text-xl mt-3">
-                        ${item.precio}
-                      </p>
+                        <p className="text-neutral-500 text-sm mt-1 line-clamp-2">
+                          {item.descripcion}
+                        </p>
 
-                      <div className="flex items-center gap-3 mt-4">
-                        <button
-                          onClick={() => decreaseQuantity(item.id)}
-                          className="bg-white/10 w-9 h-9 rounded-full font-bold cursor-pointer"
-                        >
-                          -
-                        </button>
+                        <p className="text-neutral-950 font-black text-xl mt-3">
+                          ${item.precio}
+                        </p>
 
-                        <span className="font-bold">{item.quantity}</span>
+                        <div className="flex flex-wrap items-center gap-3 mt-4">
+                          <button
+                            onClick={() => decreaseQuantity(item.id)}
+                            className="bg-neutral-100 hover:bg-neutral-200 text-neutral-950 w-9 h-9 rounded-full font-bold cursor-pointer transition"
+                          >
+                            -
+                          </button>
 
-                        <button
-                          onClick={() => increaseQuantity(item.id)}
-                          className="bg-white/10 w-9 h-9 rounded-full font-bold cursor-pointer"
-                        >
-                          +
-                        </button>
+                          <span className="font-bold text-neutral-950">
+                            {item.quantity}
+                          </span>
 
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          className="ml-4 text-red-400 hover:text-red-300 font-bold cursor-pointer"
-                        >
-                          Eliminar
-                        </button>
+                          <button
+                            onClick={() => increaseQuantity(item.id)}
+                            className="bg-neutral-100 hover:bg-neutral-200 text-neutral-950 w-9 h-9 rounded-full font-bold cursor-pointer transition"
+                          >
+                            +
+                          </button>
+
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="ml-2 text-red-500 hover:text-red-600 font-bold cursor-pointer"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-
-              <aside className="bg-gray-900 border border-white/10 rounded-3xl p-6 h-fit">
-                <h2 className="text-2xl font-black mb-6">Resumen</h2>
-
-                <div className="space-y-4">
-                  <div className="flex justify-between text-gray-300">
-                    <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
-                  </div>
-
-                  <div className="flex justify-between text-gray-300">
-                    <span>IVA 16%</span>
-                    <span>${iva.toFixed(2)}</span>
-                  </div>
-
-                  <div className="border-t border-white/10 pt-4 flex justify-between text-xl font-black">
-                    <span>Total</span>
-                    <span>${totalConIva.toFixed(2)}</span>
-                  </div>
+                  ))}
                 </div>
 
-                <button className="mt-8 w-full bg-yellow-500 text-black py-4 rounded-2xl font-black hover:bg-yellow-400 transition">
-                  Proceder al pago
-                </button>
-
-                <button
-                  onClick={clearCart}
-                  className="w-full mt-4 bg-white/10 text-white py-3 rounded-2xl font-bold hover:bg-white/20 transition cursor-pointer"
+                <aside
+                  className="
+                    bg-white/75
+                    backdrop-blur-xl
+                    border
+                    border-neutral-200
+                    rounded-[28px]
+                    md:rounded-[36px]
+                    p-6
+                    h-fit
+                    shadow-xl
+                    shadow-black/5
+                  "
                 >
-                  Vaciar carrito
-                </button>
-              </aside>
-            </div>
-          )}
-        </div>
-      </section>
+                  <h2 className="text-2xl font-black text-neutral-950 mb-6">
+                    Resumen
+                  </h2>
 
-      <Footer />
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-neutral-600">
+                      <span>Subtotal</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+
+                    <div className="flex justify-between text-neutral-600">
+                      <span>IVA 16%</span>
+                      <span>${iva.toFixed(2)}</span>
+                    </div>
+
+                    <div className="border-t border-neutral-200 pt-4 flex justify-between text-xl font-black text-neutral-950">
+                      <span>Total</span>
+                      <span>${totalConIva.toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  <button className="mt-8 w-full bg-neutral-950 text-white py-4 rounded-2xl font-black hover:bg-yellow-600 transition cursor-pointer shadow-lg shadow-black/10">
+                    Proceder al pago
+                  </button>
+
+                  <button
+                    onClick={clearCart}
+                    className="w-full mt-4 bg-neutral-100 text-neutral-950 py-3 rounded-2xl font-bold hover:bg-neutral-200 transition cursor-pointer"
+                  >
+                    Vaciar carrito
+                  </button>
+                </aside>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <Footer />
+      </div>
     </main>
   );
 }
