@@ -26,6 +26,33 @@ export default function CartPage() {
   const subtotal = total;
   const iva = subtotal * 0.16;
   const totalConIva = subtotal + iva;
+  const whatsappNumber = "526671505736";
+
+  const handleWhatsAppOrder = () => {
+    const orderDetails = cart
+      .map(
+        (item) =>
+          `• ${item.nombre}\nCantidad: ${item.quantity}\nPrecio: $${item.precio}`,
+      )
+      .join("\n\n");
+
+    const message = `
+Hola, me interesa realizar el siguiente pedido:
+
+${orderDetails}
+
+Subtotal: $${subtotal.toFixed(2)}
+IVA: $${iva.toFixed(2)}
+Total: $${totalConIva.toFixed(2)}
+
+Quedo atento(a) a la confirmación.
+  `;
+
+    window.open(
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
+      "_blank",
+    );
+  };
 
   return (
     <main
@@ -192,9 +219,22 @@ export default function CartPage() {
                       <span>${totalConIva.toFixed(2)}</span>
                     </div>
                   </div>
-
-                  <button className="mt-8 w-full bg-neutral-950 text-white py-4 rounded-2xl font-black hover:bg-yellow-600 transition cursor-pointer shadow-lg shadow-black/10">
-                    Proceder al pago
+                  <button
+                    onClick={handleWhatsAppOrder}
+                    className="
+    mt-8
+    w-full
+    bg-green-600
+    hover:bg-green-700
+    text-white
+    py-4
+    rounded-2xl
+    font-black
+    transition
+    cursor-pointer
+  "
+                  >
+                    Comprar por WhatsApp
                   </button>
 
                   <button

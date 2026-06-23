@@ -25,10 +25,9 @@ export default function Navbar() {
       <div
         className={`
           max-w-[1250px] mx-auto rounded-3xl md:rounded-full border transition-all duration-500
-          ${
-            scrolled
-              ? "bg-white/90 backdrop-blur-2xl border-neutral-200 shadow-xl shadow-black/5"
-              : "bg-white/65 backdrop-blur-xl border-white/70 shadow-lg shadow-black/5"
+          ${scrolled
+            ? "bg-white/90 backdrop-blur-2xl border-neutral-200 shadow-xl shadow-black/5"
+            : "bg-white/65 backdrop-blur-xl border-white/70 shadow-lg shadow-black/5"
           }
         `}
       >
@@ -80,14 +79,12 @@ export default function Navbar() {
 
             <Link
               to="/carrito"
-              className="relative flex items-center gap-2 text-neutral-700 hover:text-yellow-700 font-medium transition"
+              className="relative text-2xl text-neutral-700 hover:text-yellow-700 transition"
             >
-              <span>Carrito</span>
-
-              <span className="text-lg">🛒</span>
+              🛒
 
               {totalItems > 0 && (
-                <span className="absolute -top-3 -right-5 bg-red-500 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
+                <span className="absolute -top-3 -right-4 bg-red-500 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
                   {totalItems}
                 </span>
               )}
@@ -97,45 +94,21 @@ export default function Navbar() {
           <div className="hidden sm:flex">
             <Link
               to="/productos"
-              className="relative font-bold text-white transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 animate-pulse"
-            >
-              <span
-                className="
-    absolute
-    inset-0
-    rounded-xl
-    bg-gradient-to-b
-    from-amber-300
-    to-yellow-700
-    blur-md
-    opacity-70
-  "
-              ></span>
-
-              <span
-                className="
-    relative
-    flex
-    items-center
-    justify-center
-    gap-2
-    rounded-xl
+              className="
+    bg-neutral-950
+    text-white
     px-6
     py-3
-    bg-gradient-to-r
-    from-amber-300
-    via-yellow-500
-    to-amber-700
-    border
-    border-yellow-100/50
+    rounded-full
+    font-bold
+    hover:bg-neutral-800
+    transition-all
+    duration-300
     shadow-lg
-    shadow-yellow-600/40
-    text-black
-    font-black
+    shadow-black/10
   "
-              >
-                🔥 Productos
-              </span>
+            >
+              Productos
             </Link>
           </div>
 
@@ -196,68 +169,27 @@ export default function Navbar() {
               Ubicación
             </HashLink>
 
+            <Link to="/mis-compras">Mis compras</Link>
+
             <Link
               onClick={() => setOpen(false)}
-              to="/carrito"
-              className="relative flex items-center gap-2 text-neutral-700 hover:text-yellow-700 transition font-medium"
-            >
-              Carrito
-              <span className="ml-1">🛒</span>
-              {totalItems > 0 && (
-                <span className="absolute -top-3 left-24 bg-red-500 text-white min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center text-xs font-black animate-pulse">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-
-            <Link
               to="/productos"
               className="
-    relative
-    font-bold
-     text-white
-    animate-pulse
-    transition-all
-    duration-300
-  "
-            >
-              <span
-                className="
-    absolute
-    inset-0
-    rounded-xl
-    bg-gradient-to-b
-    from-amber-300
-    to-yellow-700
-    blur-md
-    opacity-70
-  "
-              ></span>
-
-              <span
-                className="
-    relative
-    flex
-    items-center
-    justify-center
-    gap-2
-    rounded-xl
+    bg-neutral-950
+    text-white
     px-6
     py-3
-    bg-gradient-to-r
-    from-amber-300
-    via-yellow-500
-    to-amber-700
-    border
-    border-yellow-100/50
+    rounded-full
+    font-bold
+    text-center
+    hover:bg-neutral-800
+    transition-all
+    duration-300
     shadow-lg
-    shadow-yellow-600/40
-    text-black
-    font-black
+    shadow-black/10
   "
-              >
-                🔥 Productos
-              </span>
+            >
+              Productos
             </Link>
           </div>
         )}
