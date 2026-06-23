@@ -24,8 +24,7 @@ export default function CartPage() {
   };
 
   const subtotal = total;
-  const iva = subtotal * 0.16;
-  const totalConIva = subtotal + iva;
+  const totalFinal = total;
   const whatsappNumber = "526671505736";
 
   const handleWhatsAppOrder = () => {
@@ -41,9 +40,7 @@ Hola, me interesa realizar el siguiente pedido:
 
 ${orderDetails}
 
-Subtotal: $${subtotal.toFixed(2)}
-IVA: $${iva.toFixed(2)}
-Total: $${totalConIva.toFixed(2)}
+Total: $${totalFinal.toFixed(2)}
 
 Quedo atento(a) a la confirmación.
   `;
@@ -102,9 +99,7 @@ Quedo atento(a) a la confirmación.
 
             {cart.length === 0 ? (
               <div className="bg-white/75 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-8 md:p-12 text-center shadow-xl shadow-black/5">
-                <p className="text-neutral-600 mb-6">
-                  Tu carrito está vacío.
-                </p>
+                <p className="text-neutral-600 mb-6">Tu carrito está vacío.</p>
 
                 <Link
                   to="/productos"
@@ -203,20 +198,39 @@ Quedo atento(a) a la confirmación.
                     Resumen
                   </h2>
 
+                  <div className="mt-6 border-t border-neutral-200 pt-5">
+                    <h3 className="text-sm font-black text-neutral-950 mb-4">
+                      Productos agregados
+                    </h3>
+
+                    <div className="space-y-3">
+                      {cart.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-start justify-between gap-4 text-sm"
+                        >
+                          <div>
+                            <p className="font-bold text-neutral-950">
+                              {item.nombre}
+                            </p>
+
+                            <p className="text-neutral-500">
+                              Cantidad: {item.quantity}
+                            </p>
+                          </div>
+
+                          <p className="font-black text-neutral-950">
+                            ${(item.precio * item.quantity).toFixed(2)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="space-y-4">
-                    <div className="flex justify-between text-neutral-600">
-                      <span>Subtotal</span>
-                      <span>${subtotal.toFixed(2)}</span>
-                    </div>
-
-                    <div className="flex justify-between text-neutral-600">
-                      <span>IVA 16%</span>
-                      <span>${iva.toFixed(2)}</span>
-                    </div>
-
-                    <div className="border-t border-neutral-200 pt-4 flex justify-between text-xl font-black text-neutral-950">
+                    <div className="border-t border-neutral-200 pt-4 flex justify-between text-2xl font-black text-neutral-950">
                       <span>Total</span>
-                      <span>${totalConIva.toFixed(2)}</span>
+                      <span>${total.toFixed(2)}</span>
                     </div>
                   </div>
                   <button

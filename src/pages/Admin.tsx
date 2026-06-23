@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
 
 import { db } from "../services/firebase";
-import { seedProducts } from "../services/seedProducts";
+import { seedProducts, deleteAllProducts } from "../services/seedProducts";
+
 
 interface Horario {
   disponible: boolean;
@@ -189,6 +190,13 @@ export default function Admin() {
             className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-3 rounded-2xl font-bold"
           >
             Subir productos a Firebase
+          </button>
+
+          <button
+            onClick={deleteAllProducts}
+            className="fixed bottom-5 right-5 bg-red-600 text-white px-6 py-3 rounded-xl font-bold z-50"
+          >
+            Borrar productos
           </button>
         </div>
 

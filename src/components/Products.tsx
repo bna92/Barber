@@ -8,7 +8,7 @@ import { db } from "../services/firebase";
 import { Product } from "../types/product";
 import { useCart } from "../context/CartContext";
 
-const PRODUCTS_PER_PAGE = 9;
+const PRODUCTS_PER_PAGE = 16;
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -150,7 +150,7 @@ export default function Products() {
                         alt={product.nombre}
                         whileHover={{ scale: 1.06 }}
                         transition={{ duration: 0.3 }}
-                        className="w-full h-32 md:h-40 object-cover cursor-pointer"
+                        className="w-full h-70 object-cover cursor-pointer"
                       />
                     </div>
                   </Link>

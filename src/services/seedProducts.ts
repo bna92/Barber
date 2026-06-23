@@ -1,181 +1,645 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, deleteDoc} from "firebase/firestore";
 import { db } from "./firebase";
 
 const products = [
-  {
-    id: "pomada-matte",
-    nombre: "Pomada Matte",
+    {
+    id: "1",
+    nombre: "Aretes/Anillos",
     precio: 180,
-    descripcion: "Fijación media y acabado natural.",
-    imagen:
-      "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1200",
-      "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1200",
-      "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?q=80&w=1200",
-      "https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?q=80&w=1200",
-    ],
+    descripcion: "",
+    imagen:"/products/1.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  {
+    id: "2",
+    nombre: "Aretes/Anillos",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/2.jpeg",
     stock: 15,
     activo: true,
     categoria: "cabello",
   },
 
-  {
-    id: "aceite-barba",
-    nombre: "Aceite para barba",
-    precio: 220,
-    descripcion: "Hidrata, suaviza y da brillo a la barba.",
-    imagen:
-      "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=1200",
-      "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1200",
-      "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=1200",
-      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1200",
-    ],
-    stock: 10,
-    activo: true,
-    categoria: "barba",
-  },
-
-  {
-    id: "shampoo-profesional",
-    nombre: "Shampoo profesional",
-    precio: 250,
-    descripcion: "Limpieza profunda para uso diario.",
-    imagen:
-      "https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=1200",
-      "https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1200",
-      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=1200",
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200",
-    ],
-    stock: 8,
+    {
+    id: "3",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/3.jpeg",
+    stock: 15,
     activo: true,
     categoria: "cabello",
   },
 
-  {
-    id: "cera-fijacion-fuerte",
-    nombre: "Cera Fijación Fuerte",
-    precio: 190,
-    descripcion: "Máxima fijación para estilos duraderos.",
-    imagen:
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200",
-      "https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=1200",
-    ],
-    stock: 12,
+    {
+    id: "4",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/4.jpeg",
+    stock: 15,
     activo: true,
     categoria: "cabello",
   },
 
-  {
-    id: "gel-profesional",
-    nombre: "Gel Profesional",
-    precio: 170,
-    descripcion: "Control total con acabado brillante.",
-    imagen:
-      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=1200",
-    ],
-    stock: 20,
+    {
+    id: "5",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/5.jpeg",
+    stock: 15,
     activo: true,
     categoria: "cabello",
   },
 
-  {
-    id: "balsamo-barba",
-    nombre: "Bálsamo para Barba",
-    precio: 210,
-    descripcion: "Nutrición profunda y control del vello facial.",
-    imagen:
-      "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=1200",
-    ],
-    stock: 14,
-    activo: true,
-    categoria: "barba",
-  },
-
-  {
-    id: "peine-carbono",
-    nombre: "Peine de Carbono",
-    precio: 90,
-    descripcion: "Resistente al calor y antiestático.",
-    imagen:
-      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=1200",
-    ],
-    stock: 25,
-    activo: true,
-    categoria: "accesorios",
-  },
-
-  {
-    id: "cepillo-barba",
-    nombre: "Cepillo para Barba",
-    precio: 140,
-    descripcion: "Ideal para desenredar y dar forma.",
-    imagen:
-      "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?q=80&w=1200",
-    ],
-    stock: 18,
-    activo: true,
-    categoria: "barba",
-  },
-
-  {
-    id: "spray-texturizador",
-    nombre: "Spray Texturizador",
-    precio: 230,
-    descripcion: "Volumen y textura para estilos modernos.",
-    imagen:
-      "https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?q=80&w=1200",
-    ],
-    stock: 11,
+    {
+    id: "6",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/6.jpeg",
+    stock: 15,
     activo: true,
     categoria: "cabello",
   },
 
-  {
-    id: "acondicionador-premium",
-    nombre: "Acondicionador Premium",
-    precio: 260,
-    descripcion: "Suavidad y protección profesional.",
-    imagen:
-      "https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1200",
-    imagenes: [
-      "https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1200",
-    ],
-    stock: 9,
+    {
+    id: "7",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/7.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+
+    {
+    id: "8",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/8.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "9",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/9.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "10",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/10.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "11",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/11.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "12",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/12.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "13",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/13.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "14",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/14.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "15",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/15.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "16",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/16.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "17",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/17.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "18",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/18.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "19",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/19.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "20",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/20.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "21",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/21.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "22",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/22.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "23",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/23.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "24",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/24.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "25",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/25.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "26",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/26.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "27",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/27.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "28",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/28.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "29",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/29.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "30",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/30.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "31",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/31.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "32",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/32.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "33",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/33.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "34",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/34.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+    
+    {
+    id: "35",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/35.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "36",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/36.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "37",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/37.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "38",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/38.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "39",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/39.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+    
+    {
+    id: "40",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/40.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "41",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/41.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "42",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/42.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "43",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/43.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "44",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/44.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+    
+    {
+    id: "45",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/45.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "46",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/46.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "47",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/47.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "48",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/48.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "49",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/49.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+    
+    {
+    id: "50",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/50.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "51",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/51.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "52",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/52.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "53",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/53.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+  
+    {
+    id: "54",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/54.jpeg",
+    stock: 15,
+    activo: true,
+    categoria: "cabello",
+  },
+    
+    {
+    id: "55",
+    nombre: "",
+    precio: 180,
+    descripcion: "",
+    imagen:"/products/55.jpeg",
+    stock: 15,
     activo: true,
     categoria: "cabello",
   },
 ];
 
 export async function seedProducts() {
-  for (const product of products) {
-    await setDoc(doc(db, "productos", product.id), {
-      nombre: product.nombre,
-      precio: product.precio,
-      descripcion: product.descripcion,
-      imagen: product.imagen,
-      imagenes: product.imagenes,
-      stock: product.stock,
-      activo: product.activo,
-      categoria: product.categoria,
-    });
-  }
+  try {
+    for (const product of products) {
+      await setDoc(doc(db, "productos", product.id), {
+        nombre: product.nombre,
+        precio: product.precio,
+        descripcion: product.descripcion,
+        imagen: product.imagen,
+        stock: product.stock,
+        activo: product.activo,
+        categoria: product.categoria,
+        order: Number(product.id),
+      });
 
-  console.log("Productos agregados correctamente");
+      console.log("Producto actualizado:", product.id, product.imagen);
+    }
+
+    console.log("Productos actualizados correctamente");
+  } catch (error) {
+    console.error("Error actualizando productos:", error);
+  }
+}
+
+
+export async function deleteAllProducts() {
+  try {
+    for (const product of products) {
+      await deleteDoc(doc(db, "productos", product.id));
+      console.log(`Producto eliminado: ${product.id}`);
+    }
+
+    console.log("Todos los productos fueron eliminados");
+  } catch (error) {
+    console.error("Error eliminando productos:", error);
+  }
 }
