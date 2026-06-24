@@ -6,7 +6,9 @@ import Admin from "./pages/Admin";
 import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
-import AdminProductsPage from "./pages/AdminProductsPage";  
+import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminProductsPage from "./pages/AdminProductsPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import { Toaster } from "sonner";
 
@@ -48,6 +50,8 @@ function App() {
         <Route path="/carrito" element={<CartPage />} />
         <Route path="/productos/:id" element={<ProductDetailPage />} />
         <Route path="/admin/productos" element={<AdminProductsPage />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin/productos" element={ <ProtectedRoute> <AdminProductsPage /> </ProtectedRoute> } />
       </Routes>
     </BrowserRouter>
   );

@@ -10,6 +10,7 @@ const heroImages = [
   "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1200",
 ];
 
+console.log("ENV:", import.meta.env);
 const titleWords = ["Tu", "estilo", "elevado", "al,", "siguiente", "nivel."];
 
 export default function Hero() {

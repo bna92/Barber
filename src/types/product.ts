@@ -8,4 +8,5 @@ export interface Product {
   inStock: boolean;
   activo: boolean;
   categoria: string;
+  order: number;
 }
