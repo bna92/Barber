@@ -14,7 +14,10 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoriaActiva, setCategoriaActiva] = useState("Todos");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(() => {
+    const savedPage = sessionStorage.getItem("products-current-page");
+    return savedPage ? Number(savedPage) : 1;
+  });
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -37,6 +40,10 @@ export default function Products() {
 
     loadProducts();
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("products-current-page", String(currentPage));
+  }, [currentPage]);
 
   const categorias = [
     "Todos",
@@ -75,6 +82,18 @@ export default function Products() {
       },
     });
   };
+
+  useEffect(() => {
+    if (!loading) {
+      const savedScroll = sessionStorage.getItem("products-scroll-y");
+
+      if (savedScroll) {
+        setTimeout(() => {
+          window.scrollTo(0, Number(savedScroll));
+        }, 100);
+      }
+    }
+  }, [loading]);
 
   if (loading) {
     return (
@@ -143,7 +162,15 @@ export default function Products() {
                     transition-all
                   "
                 >
-                  <Link to={`/productos/${product.id}`}>
+                  <Link
+                    to={`/productos/${product.id}`}
+                    onClick={() => {
+                      sessionStorage.setItem(
+                        "products-scroll-y",
+                        String(window.scrollY),
+                      );
+                    }}
+                  >
                     <div className="bg-neutral-50 overflow-hidden">
                       <motion.img
                         src={product.imagen}
@@ -167,9 +194,13 @@ export default function Products() {
                     </p>
 
                     <div className="mt-3">
-                      <span className="text-xs text-green-600 font-semibold">
-                        Stock: {product.stock}
-                      </span>
+                      <p
+                        className={`text-sm font-bold ${
+                          product.inStock ? "text-green-600" : "text-red-500"
+                        }`}
+                      >
+                        {product.inStock ? "✓ Disponible" : "✕ Agotado"}
+                      </p>
 
                       <p className="text-lg md:text-xl font-black text-neutral-950 leading-tight">
                         ${product.precio}

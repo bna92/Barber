@@ -18,6 +18,7 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -161,7 +162,10 @@ export default function ProductDetailPage() {
                     <motion.img
                       src={currentImage}
                       alt={product.nombre}
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => {
+                        setZoom(1);
+                        setIsModalOpen(true);
+                      }}
                       whileHover={{ scale: 1.03 }}
                       transition={{ duration: 0.35 }}
                       className="w-full h-[300px] md:h-[480px] object-cover cursor-zoom-in"
@@ -243,7 +247,7 @@ export default function ProductDetailPage() {
 
                 <div className="mt-7">
                   <p className="text-sm font-bold text-green-600">
-                    Stock disponible: {product.stock}
+                    Stock disponible: {product.inStock}
                   </p>
 
                   <p className="text-4xl md:text-5xl font-black text-neutral-950 mt-2">
@@ -334,8 +338,15 @@ export default function ProductDetailPage() {
             <img
               src={currentImage}
               alt={product.nombre}
-              onClick={(e) => e.stopPropagation()}
-              className="max-w-[95vw] max-h-[90vh] object-contain rounded-2xl shadow-2xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoom((prev) => (prev === 1 ? 2 : 1));
+              }}
+              className="max-w-[95vw] max-h-[90vh] object-contain rounded-2xl shadow-2xl transition-transform duration-300 cursor-zoom-in"
+              style={{
+                transform: `scale(${zoom})`,
+                cursor: zoom === 1 ? "zoom-in" : "zoom-out",
+              }}
             />
 
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 text-white px-4 py-2 rounded-full text-sm">

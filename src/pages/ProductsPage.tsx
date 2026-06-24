@@ -6,7 +6,11 @@ import Footer from "../components/Footer";
 
 export default function ProductsPage() {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const savedScroll = sessionStorage.getItem("products-scroll-y");
+
+    if (!savedScroll) {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
