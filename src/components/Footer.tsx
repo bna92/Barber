@@ -68,7 +68,7 @@ export default function Footer() {
                   <img
                     src="/naburesystemslogo.png"
                     alt="NS"
-                    className="w-20 h-20"
+                    className="w-13 h-13"
                   />
 
                   <span className="font-semibold tracking-wide">
