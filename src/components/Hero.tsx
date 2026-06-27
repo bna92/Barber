@@ -9,7 +9,7 @@ import {
 import { db } from "../services/firebase";
 import { HeroSlide } from "../types/hero";
 
-const whatsappNumber = "6671505736";
+const whatsappNumber = "5216673220272";
 
 const titleWords = ["Tu", "estilo", "elevado", "al,", "siguiente", "nivel."];
 

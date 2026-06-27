@@ -46,16 +46,15 @@ export default function TikTokVideos() {
         <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-xl shadow-black/5">
           <div className="text-center mb-10 md:mb-16">
             <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
-              Videos TikTok
+              Videos
             </span>
 
             <h2 className="text-3xl md:text-5xl font-black text-neutral-950 mt-4">
-              KAM BARBER SALÓN en redes
+              KAMBARBERSALON en Tik Tok
             </h2>
 
             <p className="text-neutral-600 mt-4 max-w-2xl mx-auto text-sm md:text-base">
-              Mira algunos de nuestros trabajos recientes. Toca el botón para
-              verlo completo en TikTok.
+              Mira algunos de nuestros trabajos recientes en Tik Tok
             </p>
           </div>
 

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { useCart } from "../context/CartContext";
-import { motion } from "framer-motion";
-import { GiFlame } from "react-icons/gi";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

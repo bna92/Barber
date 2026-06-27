@@ -32,7 +32,7 @@ export default function Socials() {
             {/* Instagram */}
 
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/kambarbersalon/"
               target="_blank"
               rel="noopener noreferrer"
               className="
@@ -62,7 +62,7 @@ export default function Socials() {
             {/* Facebook */}
 
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/profile.php?id=100064010473832"
               target="_blank"
               rel="noopener noreferrer"
               className="
@@ -89,7 +89,7 @@ export default function Socials() {
             {/* TikTok */}
 
             <a
-              href="https://tiktok.com"
+              href="https://www.tiktok.com/@karinamartinezgr?is_from_webapp=1&sender_device=pc"
               target="_blank"
               rel="noopener noreferrer"
               className="

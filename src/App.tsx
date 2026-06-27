@@ -13,6 +13,8 @@ import AdminHeroPage from "./pages/AdminHeroPage";
 import AdminServicesPage from "./pages/AdminServicesPage";
 import AdminGalleryPage from "./pages/AdminGalleryPage";
 import AdminTikTokPage from "./pages/AdminTikTokPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
 
 import { Toaster } from "sonner";
 
@@ -37,10 +39,12 @@ function App() {
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin/productos" element={<ProtectedRoute> <AdminProductsPage /> </ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute> <AdminDashboardPage /> </ProtectedRoute>} />
-        <Route path="/admin/hero" element={ <ProtectedRoute> <AdminHeroPage /> </ProtectedRoute> } />
-        <Route path="/admin/servicios" element={ <ProtectedRoute> <AdminServicesPage /> </ProtectedRoute> } />
-        <Route path="/admin/galeria" element={ <ProtectedRoute> <AdminGalleryPage /> </ProtectedRoute> } />
-        <Route path="/admin/tiktok" element={ <ProtectedRoute> <AdminTikTokPage /> </ProtectedRoute> } />
+        <Route path="/admin/hero" element={<ProtectedRoute> <AdminHeroPage /> </ProtectedRoute>} />
+        <Route path="/admin/servicios" element={<ProtectedRoute> <AdminServicesPage /> </ProtectedRoute>} />
+        <Route path="/admin/galeria" element={<ProtectedRoute> <AdminGalleryPage /> </ProtectedRoute>} />
+        <Route path="/admin/tiktok" element={<ProtectedRoute> <AdminTikTokPage /> </ProtectedRoute>} />
+        <Route path="/aviso-de-privacidad" element={<PrivacyPolicyPage />} />
+        <Route path="/terminos-y-condiciones" element={<TermsAndConditionsPage />} />
       </Routes>
     </BrowserRouter>
   );

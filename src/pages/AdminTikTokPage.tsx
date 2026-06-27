@@ -404,14 +404,20 @@ export default function AdminTikTokPage() {
                     className="border border-neutral-200 rounded-xl px-4 py-3"
                   />
 
-                  <input
-                    type="number"
-                    value={video.order}
-                    onChange={(e) =>
-                      handleChange(video.id, "order", Number(e.target.value))
-                    }
-                    className="border border-neutral-200 rounded-xl px-4 py-3"
-                  />
+                  <div>
+                    <label className="text-sm font-bold text-neutral-700">
+                      Posición Videos
+                    </label>
+
+                    <input
+                      type="number"
+                      value={video.order}
+                      onChange={(e) =>
+                        handleChange(video.id, "order", Number(e.target.value))
+                      }
+                      className="mt-1 w-full border border-neutral-200 rounded-xl px-4 py-3 outline-none focus:border-yellow-600"
+                    />
+                  </div>
 
                   <select
                     value={video.active ? "true" : "false"}

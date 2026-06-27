@@ -1,10 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
-import { seedHero } from "../services/seedHero";
-import { seedServices } from "../services/seedServices";
-import { seedGallery } from "../services/seedGallery";
-import { seedTikTok } from "../services/seedTiktok";
+
 
 const adminSections = [
     {
