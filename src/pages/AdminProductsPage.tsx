@@ -13,6 +13,7 @@ import { db, auth } from "../services/firebase";
 import { Product } from "../types/product";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 export default function AdminProductsPage() {
@@ -218,6 +219,12 @@ export default function AdminProductsPage() {
 
   return (
     <main className="min-h-screen bg-[#faf7f2] p-4 md:p-8">
+      <Link
+        to="/admin"
+        className="inline-flex items-center gap-2 mb-6 text-neutral-700 hover:text-yellow-700 font-bold transition"
+      >
+        ← Volver al panel
+      </Link>
       <div className="max-w-[1300px] mx-auto">
         <h1 className="text-4xl font-black text-neutral-950 mb-2">
           Administrar productos

@@ -1,53 +1,50 @@
-const services = [
-  {
-    title: "Corte Caballero",
-    price: "$200",
-    description: "Corte moderno con acabado profesional.",
-    image:
-      "https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?q=80&w=1200",
-  },
-  {
-    title: "Corte Dama",
-    price: "$300",
-    description: "Diseño personalizado para cualquier estilo.",
-    image:
-      "https://speedy.uenicdn.com/adf7e2ae-79b7-4c2d-a086-36e2f65cef5e/c1024_a/image/upload/v1567705538/category/shutterstock_653296774.jpg",
-  },
-  {
-    title: "Barba",
-    price: "$150",
-    description: "Perfilado y definición profesional.",
-    image:
-      "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?q=80&w=1200",
-  },
-  {
-    title: "Tinte",
-    price: "$350",
-    description: "Coloración y retoque profesional.",
-    image:
-      "https://tahecosmetics.com/trends/wp-content/uploads/2021/12/tipos-tintes.jpeg",
-  },
-  {
-    title: "Rasurado",
-    price: "$180",
-    description: "Afeitado completo con acabado limpio.",
-    image:
-      "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1200",
-  },
-  {
-    title: "Lavado",
-    price: "$100",
-    description: "Lavado y cuidado capilar profesional.",
-    image:
-      "https://mejorconsalud.as.com/wp-content/uploads/2018/07/mujer-peluqueria-lavado-cabello-768x513.jpg?auto=format%2Ccompress&quality=75&width=1080&height=608&fit=cover&gravity=center&sharp=true&progressive=true",
-  },
-];
+import { useEffect, useState } from "react";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
+
+import { db } from "../services/firebase";
+import { Service } from "../types/service";
+
+const whatsappNumber = "526671234567";
 
 export default function Services() {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const q = query(collection(db, "services"), orderBy("order", "asc"));
+        const snapshot = await getDocs(q);
+
+        const data: Service[] = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...(item.data() as Omit<Service, "id">),
+        }));
+
+        setServices(data.filter((service) => service.active));
+      } catch (error) {
+        console.error("Error cargando servicios:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadServices();
+  }, []);
+
+  if (loading) return null;
+
+  if (services.length === 0) return null;
+
   return (
     <section
       id="servicios"
-      className="relative py-16 md:py-10 overflow-hidden scroll-mt-32 "
+      className="relative py-16 md:py-10 overflow-hidden scroll-mt-32"
     >
       <div className="absolute top-20 right-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
       <div className="absolute left-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[120px]" />
@@ -89,7 +86,7 @@ export default function Services() {
           >
             {services.map((service) => (
               <div
-                key={service.title}
+                key={service.id}
                 className="
                   min-w-[85%]
                   sm:min-w-[60%]
@@ -133,7 +130,7 @@ export default function Services() {
                   </p>
 
                   <a
-                    href="https://wa.me/526671234567?text=Hola,%20quiero%20agendar%20una%20cita"
+                    href={`https://wa.me/${whatsappNumber}?text=Hola,%20quiero%20agendar%20una%20cita`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-6 inline-block bg-neutral-950 text-white font-bold px-6 py-3 rounded-full hover:bg-yellow-600 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/10"

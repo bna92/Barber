@@ -1,16 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
-const images = [
-  "https://images.unsplash.com/photo-1517832606299-7ae9b720a186",
-  "https://images.unsplash.com/photo-1503951914875-452162b0f3f1",
-  "https://images.unsplash.com/photo-1622286342621-4bd786c2447c",
-  "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f",
-  "https://images.unsplash.com/photo-1585747860715-2ba37e788b70",
-  "https://cdn0.bodas.com.mx/article-vendor/1604/original/1280/jpg/tempimageufaq2k_5_151604-172359396024812.jpeg",
-];
+import { db } from "../services/firebase";
+import { GalleryImage } from "../types/gallery";
 
 export default function GallerySection() {
+  const [images, setImages] = useState<GalleryImage[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadGalleryImages = async () => {
+      try {
+        const q = query(collection(db, "gallery"), orderBy("order", "asc"));
+        const snapshot = await getDocs(q);
+
+        const data: GalleryImage[] = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...(item.data() as Omit<GalleryImage, "id">),
+        }));
+
+        setImages(data.filter((image) => image.active));
+      } catch (error) {
+        console.error("Error cargando galería:", error);
+      }
+    };
+
+    loadGalleryImages();
+  }, []);
+
+  if (images.length === 0) return null;
+
   return (
     <section
       id="galeria"
@@ -55,8 +79,8 @@ export default function GallerySection() {
           >
             {images.map((image) => (
               <div
-                key={image}
-                onClick={() => setSelectedImage(image)}
+                key={image.id}
+                onClick={() => setSelectedImage(image.image)}
                 className="
                   min-w-[85%]
                   sm:min-w-[60%]
@@ -70,7 +94,7 @@ export default function GallerySection() {
                   bg-white
                   shadow-xl
                   shadow-black/10
-                   hover:border-yellow-500/50
+                  hover:border-yellow-500/50
                   md:hover:-translate-y-3
                   hover:shadow-[0_25px_60px_rgba(234,179,8,0.18)]
                   group
@@ -78,7 +102,7 @@ export default function GallerySection() {
                 "
               >
                 <img
-                  src={image}
+                  src={image.image}
                   alt="Corte"
                   className="w-full h-72 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700"
                 />

@@ -1,22 +1,49 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { db } from "../services/firebase";
+import { HeroSlide } from "../types/hero";
 
 const whatsappNumber = "6671505736";
 
-const heroImages = [
-  "/logofondonegro.png",
-  "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1200",
-  "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?q=80&w=1200",
-  "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1200",
-];
-
-console.log("ENV:", import.meta.env);
 const titleWords = ["Tu", "estilo", "elevado", "al,", "siguiente", "nivel."];
 
 export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
+  const [heroImages, setHeroImages] = useState<string[]>([]);
 
   useEffect(() => {
+    const loadHeroImages = async () => {
+      const q = query(
+        collection(db, "hero"),
+        orderBy("order", "asc"),
+      );
+
+      const snapshot = await getDocs(q);
+
+      const data: HeroSlide[] = snapshot.docs.map((item) => ({
+        id: item.id,
+        ...(item.data() as Omit<HeroSlide, "id">),
+      }));
+
+      setHeroImages(
+        data
+          .filter((slide) => slide.active)
+          .map((slide) => slide.image),
+      );
+    };
+
+    loadHeroImages();
+  }, []);
+
+  useEffect(() => {
+    if (heroImages.length === 0) return;
+
     const interval = setInterval(() => {
       setCurrentImage((prev) =>
         prev === heroImages.length - 1 ? 0 : prev + 1,
@@ -24,7 +51,7 @@ export default function Hero() {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [heroImages.length]);
   return (
     <section
       className="relative min-h-screen overflow-hidden  text-neutral-950 pt-28 lg:pt-0"
@@ -183,11 +210,10 @@ export default function Hero() {
                       <button
                         key={index}
                         onClick={() => setCurrentImage(index)}
-                        className={`h-2 rounded-full transition-all duration-500 ${
-                          currentImage === index
-                            ? "w-8 bg-white"
-                            : "w-2 bg-white/50"
-                        }`}
+                        className={`h-2 rounded-full transition-all duration-500 ${currentImage === index
+                          ? "w-8 bg-white"
+                          : "w-2 bg-white/50"
+                          }`}
                       />
                     ))}
                   </div>

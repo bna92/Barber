@@ -15,7 +15,7 @@ export default function AdminLoginPage() {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            navigate("/admin/productos");
+            navigate("/admin");
         } catch (error) {
             console.error(error);
             alert("Correo o contraseña incorrectos");
