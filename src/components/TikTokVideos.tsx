@@ -72,7 +72,7 @@ export default function TikTokVideos() {
     muted
     loop
     playsInline
-    preload="metadata"
+    preload="none"
     className="w-full h-full object-contain bg-black"
   />
 

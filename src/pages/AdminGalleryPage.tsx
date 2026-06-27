@@ -250,6 +250,7 @@ export default function AdminGalleryPage() {
                     src={newImage.image}
                     alt="Vista previa"
                     className="mt-4 w-full h-52 object-cover rounded-2xl border border-neutral-200"
+                    loading="lazy"
                   />
                 )}
               </div>
@@ -276,6 +277,7 @@ export default function AdminGalleryPage() {
                     src={image.image}
                     alt="Galería"
                     className="w-full h-40 object-cover rounded-2xl bg-neutral-100 border border-neutral-200"
+                    loading="lazy"
                   />
 
                   <label className="mt-3 block text-center bg-neutral-950 text-white px-4 py-2 rounded-xl font-bold cursor-pointer hover:bg-yellow-600 transition text-sm">
