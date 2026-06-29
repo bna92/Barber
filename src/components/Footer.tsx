@@ -66,7 +66,7 @@ export default function Footer() {
 
                 <span className="inline-flex items-center gap-2 mt-2">
                   <img
-                    src="/naburesystemslogo.png"
+                    src="/faviconnabure.png"
                     alt="NS"
                     className="w-13 h-13"
                   />
