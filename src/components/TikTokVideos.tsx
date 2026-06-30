@@ -67,7 +67,7 @@ export default function TikTokVideos() {
                 <div className="relative bg-black">
                   <video
                     src={item.video}
-                    autoPlay
+                   
                     muted
                     loop
                     playsInline
