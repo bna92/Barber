@@ -39,11 +39,11 @@ export default function TikTokVideos() {
       className="relative py-16 md:py-10 overflow-hidden scroll-mt-32"
     >
       <div className="pointer-events-none absolute inset-0 opacity-70 [background:radial-gradient(520px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(234,179,8,0.14),transparent_45%)]" />
-      <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
-      <div className="absolute right-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[120px]" />
+      <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[60px] md:blur-[120px]" />
+      <div className="absolute right-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[60px] md:blur-[120px]" />
 
       <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-6">
-        <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-xl shadow-black/5">
+        <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-lg md:shadow-xl shadow-black/5">
           <div className="text-center mb-10 md:mb-16">
             <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
               Videos
@@ -62,19 +62,26 @@ export default function TikTokVideos() {
             {videos.map((item) => (
               <article
                 key={item.id}
-                className="min-w-[82%] sm:min-w-[55%] lg:min-w-0 snap-center overflow-hidden rounded-[28px] md:rounded-[32px] border border-neutral-200 bg-white shadow-xl shadow-black/10"
+                className="min-w-[82%] sm:min-w-[55%] lg:min-w-0 snap-center overflow-hidden rounded-[28px] md:rounded-[32px] border border-neutral-200 bg-white shadow-lg md:shadow-xl shadow-black/10"
               >
                 <div className="relative bg-black">
-  <video
-    src={item.video}
-    autoPlay
-    controls
-    muted
-    loop
-    playsInline
-    preload="none"
-    className="w-full h-full object-contain bg-black"
-  />
+                  <video
+                    src={item.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    controls
+                    preload="metadata"
+                    disablePictureInPicture
+                    controlsList="nodownload"
+                    className="
+    w-full
+    h-[520px]
+    object-contain
+    bg-black
+  "
+                  />
 
                   <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-4 z-10 pointer-events-none">
                     <span className="text-white font-bold text-sm drop-shadow-lg">
@@ -111,7 +118,7 @@ export default function TikTokVideos() {
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex justify-center items-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full shadow-xl shadow-red-500/40 transition-all duration-300 hover:scale-105"
+                    className="w-full flex justify-center items-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-full shadow-lg md:shadow-xl shadow-red-500/40 transition-all duration-300 hover:scale-105"
                   >
                     Ver en TikTok
                   </a>

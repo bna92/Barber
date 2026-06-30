@@ -67,7 +67,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="inline-flex items-center gap-2 rounded-full border border-yellow-700/20 bg-white/70 px-4 py-2 text-xs font-bold tracking-[0.25em] text-yellow-700 shadow-sm backdrop-blur-xl"
+              className="inline-flex items-center gap-2 rounded-full border border-yellow-700/20 bg-white/70 px-4 py-2 text-xs font-bold tracking-[0.25em] text-yellow-700 shadow-sm backdrop-blur-md md:backdrop-blur-xl"
             >
               ✦ BEAUTY & BARBER EXPERIENCE
             </motion.div>
@@ -138,7 +138,7 @@ export default function Hero() {
 
               <a
                 href="#servicios"
-                className="inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white/70 px-8 py-4 font-bold text-neutral-950 shadow-sm backdrop-blur-xl transition hover:border-yellow-500 hover:bg-white"
+                className="inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white/70 px-8 py-4 font-bold text-neutral-950 shadow-sm backdrop-blur-md md:backdrop-blur-xl transition hover:border-yellow-500 hover:bg-white"
               >
                 Ver servicios
               </a>
@@ -179,15 +179,20 @@ export default function Hero() {
     border-white
   "
               >
-                <motion.img
-                  key={currentImage}
-                  src={heroImages[currentImage]}
-                  alt="Barbería premium"
-                  initial={{ opacity: 0, scale: 1.15 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.9 }}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+                {heroImages.length > 0 && (
+                  <motion.img
+                    key={currentImage}
+                    src={heroImages[currentImage]}
+                    alt="Barbería premium"
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                    initial={{ opacity: 0, scale: 1.08 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6 }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )}
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
