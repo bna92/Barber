@@ -42,7 +42,7 @@ export default function TikTokVideos() {
       <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[60px] md:blur-[120px]" />
       <div className="absolute right-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[60px] md:blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-6">
+      <div className="relative z-10 max-w-[1750px] mx-auto px-4 md:px-6">
         <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-lg md:shadow-xl shadow-black/5">
           <div className="text-center mb-10 md:mb-16">
             <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
@@ -58,7 +58,7 @@ export default function TikTokVideos() {
             </p>
           </div>
 
-          <div className="flex lg:grid lg:grid-cols-3 gap-5 md:gap-8 overflow-x-auto lg:overflow-visible snap-x snap-mandatory lg:snap-none pb-4 lg:pb-0">
+          <div className="flex md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 md:gap-8 overflow-x-auto lg:overflow-visible snap-x snap-mandatory lg:snap-none pb-4 lg:pb-0">
             {videos.map((item) => (
               <article
                 key={item.id}

@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="absolute left-0 bottom-0 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
       <div className="absolute right-0 top-0 w-96 h-96 bg-orange-400/10 blur-[120px]" />
 
-      <div className="max-w-[1300px] mx-auto px-4 md:px-6">
+      <div className="max-w-[1750px] mx-auto px-4 md:px-6">
         <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[24px] p-4 md:p-5 shadow-xl shadow-black/5">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center md:text-left">

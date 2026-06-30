@@ -7,7 +7,7 @@ export default function Location() {
       <div className="absolute left-10 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
       <div className="absolute right-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-6">
+      <div className="relative z-10 max-w-[1750px] mx-auto px-4 md:px-6">
         <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-xl shadow-black/5">
           <div className="text-center mb-10 md:mb-16">
             <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
