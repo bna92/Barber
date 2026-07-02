@@ -47,7 +47,7 @@ export default function ProductsPage() {
           </span>
 
           <h1 className="text-4xl md:text-6xl font-black text-neutral-950 mt-4">
-            Productos Profesionales
+            Catálogo de Productos 
           </h1>
 
           <p className="text-neutral-600 mt-4 max-w-2xl mx-auto">

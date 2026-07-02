@@ -7,12 +7,17 @@ import {
   query,
   orderBy,
   setDoc,
+  deleteDoc
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "../services/firebase";
+import { db, auth } from "../services/firebase";
 import { Product } from "../types/product";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export default function AdminProductsPage() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,28 +41,53 @@ export default function AdminProductsPage() {
   ) => {
     try {
       const file = e.target.files?.[0];
-
       if (!file) return;
 
-      const imageRef = ref(storage, `products/${Date.now()}-${file.name}`);
+      const cloudName = "df7in528r";
+      const uploadPreset = "barberia_unsigned";
 
-      await uploadBytes(imageRef, file);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
 
-      const imageUrl = await getDownloadURL(imageRef);
-
-      if (productId) {
-        handleChange(productId, "imagen", imageUrl);
-      } else {
-        setNewProduct((prev) => ({
-          ...prev,
-          imagen: imageUrl,
-        }));
+      if (!response.ok) {
+        throw new Error("Error al subir imagen");
       }
 
-      alert("Imagen subida correctamente. Ahora presiona Guardar cambios.");
+      const data = await response.json();
+      const imageUrl = data.secure_url;
+
+      if (productId) {
+        await updateDoc(doc(db, "productos", productId), {
+          imagen: imageUrl,
+        });
+
+        setProducts((prev) =>
+          prev.map((product) =>
+            product.id === productId ? { ...product, imagen: imageUrl } : product,
+          ),
+        );
+
+        alert("Imagen actualizada correctamente");
+        return;
+      }
+
+      setNewProduct((prev) => ({
+        ...prev,
+        imagen: imageUrl,
+      }));
+
+      alert("Imagen subida correctamente");
     } catch (error) {
       console.error("Error subiendo imagen:", error);
-      alert("Error subiendo imagen. Revisa la consola.");
+      alert("No se pudo subir la imagen.");
     }
   };
 
@@ -74,7 +104,9 @@ export default function AdminProductsPage() {
       imagen: newProduct.imagen,
       inStock: newProduct.inStock,
       activo: newProduct.activo,
-      categoria: newProduct.categoria,
+      categoria:
+        newProduct.categoria.charAt(0).toUpperCase() +
+        newProduct.categoria.slice(1).toLowerCase(),
       order: Number(newProduct.order),
     });
 
@@ -132,13 +164,49 @@ export default function AdminProductsPage() {
       nombre: product.nombre,
       precio: Number(product.precio),
       descripcion: product.descripcion,
-      categoria: product.categoria,
+      categoria:
+        product.categoria.charAt(0).toUpperCase() +
+        product.categoria.slice(1).toLowerCase(),
       imagen: product.imagen,
       inStock: product.inStock,
       activo: product.activo,
+      order: Number(product.order),
     });
 
     alert("Producto actualizado correctamente");
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    const confirmDelete = confirm("¿Seguro que quieres eliminar este producto?");
+
+    if (!confirmDelete) return;
+
+    await deleteDoc(doc(db, "productos", productId));
+
+    setProducts((prev) => prev.filter((product) => product.id !== productId));
+
+    alert("Producto eliminado correctamente");
+  };
+
+  const handleDeleteAllProducts = async () => {
+    const confirmDelete = confirm(
+      "¿Seguro que quieres eliminar TODOS los productos? Esta acción no se puede deshacer.",
+    );
+
+    if (!confirmDelete) return;
+
+    for (const product of products) {
+      await deleteDoc(doc(db, "productos", product.id));
+    }
+
+    setProducts([]);
+
+    alert("Todos los productos fueron eliminados");
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/admin/login");
   };
 
   if (loading) {
@@ -151,21 +219,45 @@ export default function AdminProductsPage() {
 
   return (
     <main className="min-h-screen bg-[#faf7f2] p-4 md:p-8">
+      <Link
+        to="/admin"
+        className="inline-flex items-center gap-2 mb-6 text-neutral-700 hover:text-yellow-700 font-bold transition"
+      >
+        ← Volver al panel
+      </Link>
       <div className="max-w-[1300px] mx-auto">
         <h1 className="text-4xl font-black text-neutral-950 mb-2">
           Administrar productos
         </h1>
 
+        <div className="flex flex-wrap gap-3 mb-6">
+          <button
+            onClick={() => setShowCreateForm(!showCreateForm)}
+            className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition"
+          >
+            {showCreateForm ? "Cancelar" : "Agregar producto"}
+          </button>
+
+          <button
+            onClick={handleDeleteAllProducts}
+            className="bg-red-600 text-white px-6 py-3 rounded-full font-bold hover:bg-red-700 transition"
+          >
+            Eliminar todos
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="bg-white border border-neutral-200 text-neutral-950 px-6 py-3 rounded-full font-bold hover:border-red-500 hover:text-red-600 transition"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+
         <p className="text-neutral-600 mb-8">
-          Edita nombre, precio, descripción, categoría y disponibilidad.
+          Edita nombre, imagen, precio, descripción, categoría, disponibilidad y estado.
         </p>
 
-        <button
-          onClick={() => setShowCreateForm(!showCreateForm)}
-          className="mb-6 bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition"
-        >
-          {showCreateForm ? "Cancelar" : "Agregar producto"}
-        </button>
+
 
         {showCreateForm && (
           <div className="bg-white border border-neutral-200 rounded-3xl p-5 md:p-6 shadow-lg shadow-black/5 mb-8">
@@ -192,18 +284,24 @@ export default function AdminProductsPage() {
                 className="border border-neutral-200 rounded-xl px-4 py-3"
               />
 
-              <input
-                type="number"
-                placeholder="Precio"
-                value={newProduct.precio}
-                onChange={(e) =>
-                  setNewProduct({
-                    ...newProduct,
-                    precio: Number(e.target.value),
-                  })
-                }
-                className="border border-neutral-200 rounded-xl px-4 py-3"
-              />
+              <div>
+                <label className="block text-sm font-bold text-neutral-700 mb-2">
+                  Precio
+                </label>
+
+                <input
+                  type="number"
+                  placeholder="Precio"
+                  value={newProduct.precio}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      precio: Number(e.target.value),
+                    })
+                  }
+                  className="w-full border border-neutral-200 rounded-xl px-4 py-3"
+                />
+              </div>
 
               <input
                 placeholder="Categoría"
@@ -235,18 +333,24 @@ export default function AdminProductsPage() {
                 )}
               </div>
 
-              <input
-                type="number"
-                placeholder="Orden"
-                value={newProduct.order}
-                onChange={(e) =>
-                  setNewProduct({
-                    ...newProduct,
-                    order: Number(e.target.value),
-                  })
-                }
-                className="border border-neutral-200 rounded-xl px-4 py-3"
-              />
+              <div>
+                <label className="block text-sm font-bold text-neutral-700 mb-2">
+                  Posición en Catálogo
+                </label>
+
+                <input
+                  type="number"
+                  placeholder="Orden"
+                  value={newProduct.order}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      order: Number(e.target.value),
+                    })
+                  }
+                  className="w-full border border-neutral-200 rounded-xl px-4 py-3"
+                />
+              </div>
 
               <select
                 value={newProduct.inStock ? "true" : "false"}
@@ -371,6 +475,21 @@ export default function AdminProductsPage() {
 
                   <div>
                     <label className="text-sm font-bold text-neutral-700">
+                      Posición en Catálogo
+                    </label>
+
+                    <input
+                      type="number"
+                      value={product.order}
+                      onChange={(e) =>
+                        handleChange(product.id, "order", Number(e.target.value))
+                      }
+                      className="mt-1 w-full border border-neutral-200 rounded-xl px-4 py-3 outline-none focus:border-yellow-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-bold text-neutral-700">
                       Disponibilidad
                     </label>
                     <select
@@ -423,7 +542,14 @@ export default function AdminProductsPage() {
                     />
                   </div>
 
-                  <div className="md:col-span-2 flex justify-end">
+                  <div className="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3">
+                    <button
+                      onClick={() => handleDeleteProduct(product.id)}
+                      className="bg-red-600 text-white px-6 py-3 rounded-full font-bold hover:bg-red-700 transition cursor-pointer"
+                    >
+                      Eliminar producto
+                    </button>
+
                     <button
                       onClick={() => handleSave(product)}
                       className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition cursor-pointer"

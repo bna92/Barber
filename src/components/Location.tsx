@@ -7,7 +7,7 @@ export default function Location() {
       <div className="absolute left-10 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
       <div className="absolute right-10 bottom-20 w-96 h-96 bg-orange-400/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-6">
+      <div className="relative z-10 max-w-[1750px] mx-auto px-4 md:px-6">
         <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-5 md:p-12 shadow-xl shadow-black/5">
           <div className="text-center mb-10 md:mb-16">
             <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
@@ -18,9 +18,6 @@ export default function Location() {
               Visítanos
             </h2>
 
-            <p className="text-neutral-600 mt-4 max-w-2xl mx-auto text-sm md:text-base">
-              Estamos ubicados en una de las zonas más concurridas de Culiacán.
-            </p>
           </div>
 
           <div
@@ -36,25 +33,20 @@ export default function Location() {
             "
           >
             <iframe
-              src="https://maps.google.com/maps?q=plaza%20forum%20culiacan&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d905.2277154721228!2d-107.4104763402618!3d24.83272178512639!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86bcdb33f9e6676b%3A0xe6230e2fe4686e9e!2sKAM%20Barber%20Salon!5e0!3m2!1ses-419!2smx!4v1782587599494!5m2!1ses-419!2smx"
               className="w-full h-[350px] md:h-[500px]"
               loading="lazy"
             />
           </div>
 
           <div className="mt-8 text-center">
-            <h3 className="text-neutral-950 text-2xl font-bold">
-              Plaza Fórum Culiacán
-            </h3>
 
             <p className="text-neutral-600 mt-2 max-w-xl mx-auto">
-              Blvd. José Diego Valadés #1676,
-              Desarrollo Urbano Tres Ríos,
-              Culiacán, Sinaloa.
+              Calle Sarh #3220 Fovissste Humaya · Culiacán
             </p>
 
             <a
-              href="https://maps.google.com/?q=plaza+forum+culiacan"
+              href="https://maps.app.goo.gl/i9z3VDx1o1CqkRdY9"
               target="_blank"
               rel="noopener noreferrer"
               className="

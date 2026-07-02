@@ -1,34 +1,27 @@
-import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
-import Admin from "./pages/Admin";
-import ProductsPage from "./pages/ProductsPage";
-import CartPage from "./pages/CartPage";
-import ProductDetailPage from "./pages/ProductDetailPage";
-import AdminProductsPage from "./pages/AdminProductsPage";  
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import { Toaster } from "sonner";
 
-function RedirectOnNewSession() {
-  const location = useLocation();
-  const navigate = useNavigate();
+const Home = lazy(() => import("./pages/Home"));
+const ProductsPage = lazy(() => import("./pages/ProductsPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 
-  useEffect(() => {
-    const sessionStarted = sessionStorage.getItem("sessionStarted");
+const AdminLoginPage = lazy(() => import("./pages/AdminLoginPage"));
+const AdminDashboardPage = lazy(() => import("./pages/AdminDashboardPage"));
+const AdminProductsPage = lazy(() => import("./pages/AdminProductsPage"));
+const AdminHeroPage = lazy(() => import("./pages/AdminHeroPage"));
+const AdminServicesPage = lazy(() => import("./pages/AdminServicesPage"));
+const AdminGalleryPage = lazy(() => import("./pages/AdminGalleryPage"));
+const AdminTikTokPage = lazy(() => import("./pages/AdminTikTokPage"));
 
-    if (!sessionStarted) {
-      sessionStorage.setItem("sessionStarted", "true");
-
-      if (location.pathname !== "/") {
-        navigate("/", { replace: true });
-      }
-    }
-  }, [location.pathname, navigate]);
-
-  return null;
-}
-
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const TermsAndConditionsPage = lazy(
+  () => import("./pages/TermsAndConditionsPage"),
+);
 
 function App() {
   return (
@@ -41,14 +34,82 @@ function App() {
         expand={true}
       />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/productos" element={<ProductsPage />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/carrito" element={<CartPage />} />
-        <Route path="/productos/:id" element={<ProductDetailPage />} />
-        <Route path="/admin/productos" element={<AdminProductsPage />} />
-      </Routes>
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
+        <div className="h-10 w-10 rounded-full border-4 border-yellow-500 border-t-transparent animate-spin" />
+      </div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/productos" element={<ProductsPage />} />
+          <Route path="/carrito" element={<CartPage />} />
+          <Route path="/productos/:id" element={<ProductDetailPage />} />
+
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/productos"
+            element={
+              <ProtectedRoute>
+                <AdminProductsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/hero"
+            element={
+              <ProtectedRoute>
+                <AdminHeroPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/servicios"
+            element={
+              <ProtectedRoute>
+                <AdminServicesPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/galeria"
+            element={
+              <ProtectedRoute>
+                <AdminGalleryPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/tiktok"
+            element={
+              <ProtectedRoute>
+                <AdminTikTokPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/aviso-de-privacidad"
+            element={<PrivacyPolicyPage />}
+          />
+
+          <Route
+            path="/terminos-y-condiciones"
+            element={<TermsAndConditionsPage />}
+          />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

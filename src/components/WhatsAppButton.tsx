@@ -1,6 +1,6 @@
 import { FaWhatsapp } from "react-icons/fa";
 
-const whatsappNumber = "6671505736";
+const whatsappNumber = "5216673220272";
 const message = "Hola, quiero agendar una cita";
 
 export default function WhatsAppButton() {

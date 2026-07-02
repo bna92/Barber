@@ -12,7 +12,7 @@ export default function Socials() {
       <div className="absolute left-20 top-20 w-96 h-96 bg-yellow-500/10 blur-[120px]" />
       <div className="absolute right-10 bottom-10 w-96 h-96 bg-orange-400/10 blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-6">
+      <div className="relative z-10 max-w-[1750px] mx-auto px-4 md:px-6">
         <div className="bg-white/30 backdrop-blur-xl border border-neutral-200 rounded-[28px] md:rounded-[40px] p-6 md:p-12 shadow-xl shadow-black/5">
           <div className="text-center">
             <span className="text-yellow-700 uppercase tracking-[0.3em] text-xs md:text-sm font-bold">
@@ -32,7 +32,7 @@ export default function Socials() {
             {/* Instagram */}
 
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/kambarbersalon/"
               target="_blank"
               rel="noopener noreferrer"
               className="
@@ -62,7 +62,7 @@ export default function Socials() {
             {/* Facebook */}
 
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/profile.php?id=100064010473832"
               target="_blank"
               rel="noopener noreferrer"
               className="
@@ -89,7 +89,7 @@ export default function Socials() {
             {/* TikTok */}
 
             <a
-              href="https://tiktok.com"
+              href="https://www.tiktok.com/@karinamartinezgr?is_from_webapp=1&sender_device=pc"
               target="_blank"
               rel="noopener noreferrer"
               className="
