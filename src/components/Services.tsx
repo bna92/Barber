@@ -4,7 +4,7 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { Service } from "../types/service";
 
-const whatsappNumber = "526671234567";
+const whatsappNumber = "5216673220272";
 
 export default function Services() {
   const [services, setServices] = useState<Service[]>([]);

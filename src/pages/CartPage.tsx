@@ -25,7 +25,7 @@ export default function CartPage() {
 
   const subtotal = total;
   const totalFinal = total;
-  const whatsappNumber = "526671505736";
+  const whatsappNumber = "5216673220272";
 
   const handleWhatsAppOrder = () => {
     const orderDetails = cart

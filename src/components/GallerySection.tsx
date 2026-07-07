@@ -58,7 +58,7 @@ export default function GallerySection() {
           </div>
 
           <div className="relative flex md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none pb-4 md:pb-0 scrollbar-hide">
-            {images.map((image, index) => (
+            {images.map((image) => (
               <button
                 key={image.id}
                 onClick={() => setSelectedImage(image.image)}

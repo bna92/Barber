@@ -246,8 +246,12 @@ export default function ProductDetailPage() {
                 </p>
 
                 <div className="mt-7">
-                  <p className="text-sm font-bold text-green-600">
-                    Stock disponible: {product.inStock}
+                  <p
+                    className={`text-sm font-bold ${
+                      product.inStock ? "text-green-600" : "text-red-500"
+                    }`}
+                  >
+                    {product.inStock ? "✓ Stock disponible" : "✕ Agotado"}
                   </p>
 
                   <p className="text-4xl md:text-5xl font-black text-neutral-950 mt-2">

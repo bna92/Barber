@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import {
   collection,
   getDocs,
+  getDoc,
   updateDoc,
   doc,
   query,
   orderBy,
   setDoc,
-  deleteDoc
+  deleteDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { db, auth } from "../services/firebase";
 import { Product } from "../types/product";
@@ -20,8 +23,24 @@ export default function AdminProductsPage() {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saveStatus, setSaveStatus] = useState<Record<string, "dirty" | "saved">>({});
 
   const [showCreateForm, setShowCreateForm] = useState(false);
+
+  const hasUnsavedChanges = Object.values(saveStatus).some(
+    (status) => status === "dirty",
+  );
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!hasUnsavedChanges) return;
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   const [newProduct, setNewProduct] = useState({
     id: "",
@@ -29,6 +48,7 @@ export default function AdminProductsPage() {
     precio: 0,
     descripcion: "",
     imagen: "",
+    imagenes: [] as string[],
     inStock: true,
     activo: true,
     categoria: "",
@@ -91,9 +111,113 @@ export default function AdminProductsPage() {
     }
   };
 
+  const uploadToCloudinary = async (file: File) => {
+    const cloudName = "df7in528r";
+    const uploadPreset = "barberia_unsigned";
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset);
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Error al subir imagen");
+    }
+
+    const data = await response.json();
+    return data.secure_url as string;
+  };
+
+  const handleAddGalleryImage = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    productId?: string,
+  ) => {
+    try {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const imageUrl = await uploadToCloudinary(file);
+
+      if (productId) {
+        await updateDoc(doc(db, "productos", productId), {
+          imagenes: arrayUnion(imageUrl),
+        });
+
+        setProducts((prev) =>
+          prev.map((product) =>
+            product.id === productId
+              ? {
+                  ...product,
+                  imagenes: [...(product.imagenes ?? []), imageUrl],
+                }
+              : product,
+          ),
+        );
+
+        alert("Imagen agregada a la galería del producto");
+        return;
+      }
+
+      setNewProduct((prev) => ({
+        ...prev,
+        imagenes: [...prev.imagenes, imageUrl],
+      }));
+
+      alert("Imagen agregada a la galería");
+    } catch (error) {
+      console.error("Error subiendo imagen de galería:", error);
+      alert("No se pudo subir la imagen.");
+    }
+  };
+
+  const handleRemoveGalleryImage = async (
+    productId: string,
+    imageUrl: string,
+  ) => {
+    await updateDoc(doc(db, "productos", productId), {
+      imagenes: arrayRemove(imageUrl),
+    });
+
+    setProducts((prev) =>
+      prev.map((product) =>
+        product.id === productId
+          ? {
+              ...product,
+              imagenes: (product.imagenes ?? []).filter(
+                (url) => url !== imageUrl,
+              ),
+            }
+          : product,
+      ),
+    );
+  };
+
+  const handleRemoveNewProductGalleryImage = (imageUrl: string) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      imagenes: prev.imagenes.filter((url) => url !== imageUrl),
+    }));
+  };
+
   const handleCreateProduct = async () => {
     if (!newProduct.id || !newProduct.nombre || !newProduct.categoria) {
       alert("Completa ID, nombre y categoría.");
+      return;
+    }
+
+    const existing = await getDoc(doc(db, "productos", newProduct.id));
+
+    if (existing.exists()) {
+      alert(
+        `Ya existe un producto con el ID "${newProduct.id}". Usa otro ID distinto.`,
+      );
       return;
     }
 
@@ -102,6 +226,7 @@ export default function AdminProductsPage() {
       precio: Number(newProduct.precio),
       descripcion: newProduct.descripcion,
       imagen: newProduct.imagen,
+      imagenes: newProduct.imagenes,
       inStock: newProduct.inStock,
       activo: newProduct.activo,
       categoria:
@@ -118,6 +243,7 @@ export default function AdminProductsPage() {
       precio: 0,
       descripcion: "",
       imagen: "",
+      imagenes: [],
       inStock: true,
       activo: true,
       categoria: "",
@@ -155,6 +281,8 @@ export default function AdminProductsPage() {
         product.id === id ? { ...product, [field]: value } : product,
       ),
     );
+
+    setSaveStatus((prev) => ({ ...prev, [id]: "dirty" }));
   };
 
   const handleSave = async (product: Product) => {
@@ -172,6 +300,8 @@ export default function AdminProductsPage() {
       activo: product.activo,
       order: Number(product.order),
     });
+
+    setSaveStatus((prev) => ({ ...prev, [product.id]: "saved" }));
 
     alert("Producto actualizado correctamente");
   };
@@ -205,6 +335,15 @@ export default function AdminProductsPage() {
   };
 
   const handleLogout = async () => {
+    if (
+      hasUnsavedChanges &&
+      !confirm(
+        "Tienes cambios sin guardar. ¿Seguro que quieres cerrar sesión sin guardarlos?",
+      )
+    ) {
+      return;
+    }
+
     await signOut(auth);
     navigate("/admin/login");
   };
@@ -221,6 +360,16 @@ export default function AdminProductsPage() {
     <main className="min-h-screen bg-[#faf7f2] p-4 md:p-8">
       <Link
         to="/admin"
+        onClick={(e) => {
+          if (
+            hasUnsavedChanges &&
+            !confirm(
+              "Tienes cambios sin guardar. ¿Seguro que quieres salir sin guardarlos?",
+            )
+          ) {
+            e.preventDefault();
+          }
+        }}
         className="inline-flex items-center gap-2 mb-6 text-neutral-700 hover:text-yellow-700 font-bold transition"
       >
         ← Volver al panel
@@ -232,7 +381,15 @@ export default function AdminProductsPage() {
 
         <div className="flex flex-wrap gap-3 mb-6">
           <button
-            onClick={() => setShowCreateForm(!showCreateForm)}
+            onClick={() => {
+              if (!showCreateForm) {
+                const nextOrder = products.length
+                  ? Math.max(...products.map((p) => p.order)) + 1
+                  : 0;
+                setNewProduct((prev) => ({ ...prev, order: nextOrder }));
+              }
+              setShowCreateForm(!showCreateForm);
+            }}
             className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition"
           >
             {showCreateForm ? "Cancelar" : "Agregar producto"}
@@ -330,6 +487,40 @@ export default function AdminProductsPage() {
                     alt="Vista previa"
                     className="mt-4 w-32 h-32 object-cover rounded-2xl border border-neutral-200"
                   />
+                )}
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-sm font-bold text-neutral-700 mb-2">
+                  Galería adicional (opcional, varias fotos del producto)
+                </label>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleAddGalleryImage(e)}
+                  className="w-full border border-neutral-200 rounded-xl px-4 py-3 bg-white"
+                />
+
+                {newProduct.imagenes.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    {newProduct.imagenes.map((url) => (
+                      <div key={url} className="relative">
+                        <img
+                          src={url}
+                          alt="Imagen de galería"
+                          className="w-20 h-20 object-cover rounded-xl border border-neutral-200"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveNewProductGalleryImage(url)}
+                          className="absolute -top-2 -right-2 bg-red-600 text-white w-6 h-6 rounded-full text-xs font-bold hover:bg-red-700 transition"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
 
@@ -542,20 +733,73 @@ export default function AdminProductsPage() {
                     />
                   </div>
 
-                  <div className="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3">
-                    <button
-                      onClick={() => handleDeleteProduct(product.id)}
-                      className="bg-red-600 text-white px-6 py-3 rounded-full font-bold hover:bg-red-700 transition cursor-pointer"
-                    >
-                      Eliminar producto
-                    </button>
+                  <div className="md:col-span-2">
+                    <label className="text-sm font-bold text-neutral-700">
+                      Galería adicional (fotos extra que se ven en la ficha del producto)
+                    </label>
 
-                    <button
-                      onClick={() => handleSave(product)}
-                      className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition cursor-pointer"
-                    >
-                      Guardar cambios
-                    </button>
+                    <div className="mt-2 flex flex-wrap gap-3">
+                      {(product.imagenes ?? []).map((url) => (
+                        <div key={url} className="relative">
+                          <img
+                            src={url}
+                            alt="Imagen de galería"
+                            className="w-20 h-20 object-cover rounded-xl border border-neutral-200"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleRemoveGalleryImage(product.id, url)
+                            }
+                            className="absolute -top-2 -right-2 bg-red-600 text-white w-6 h-6 rounded-full text-xs font-bold hover:bg-red-700 transition"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+
+                      <label className="w-20 h-20 flex items-center justify-center rounded-xl border-2 border-dashed border-neutral-300 text-neutral-500 text-xs font-bold cursor-pointer hover:border-yellow-600 hover:text-yellow-700 transition text-center px-1">
+                        + Agregar
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleAddGalleryImage(e, product.id)}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      {saveStatus[product.id] === "dirty" && (
+                        <p className="text-sm font-bold text-neutral-400">
+                          Cambios sin guardar
+                        </p>
+                      )}
+
+                      {saveStatus[product.id] === "saved" && (
+                        <p className="text-sm font-bold text-green-600">
+                          ✓ Cambios guardados
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => handleDeleteProduct(product.id)}
+                        className="bg-red-600 text-white px-6 py-3 rounded-full font-bold hover:bg-red-700 transition cursor-pointer"
+                      >
+                        Eliminar producto
+                      </button>
+
+                      <button
+                        onClick={() => handleSave(product)}
+                        className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition cursor-pointer"
+                      >
+                        Guardar cambios
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

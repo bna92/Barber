@@ -1,7 +1,7 @@
 import { seedHero, deleteHero } from "./seedHero";
 import { seedServices, deleteServices } from "./seedServices";
 import { seedGallery, deleteGallery } from "./seedGallery";
-import { seedTikTok, deleteTikTok } from "./seedTiktok";
+import { seedTikTok, deleteTikTok } from "./seedTikTok";
 
 export async function seedSiteContent() {
   await seedHero();
