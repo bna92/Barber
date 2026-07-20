@@ -56,7 +56,7 @@ export default function Hero() {
               animate="visible"
               className="text-[3.2rem] sm:text-6xl lg:text-6xl xl:text-5xl 2xl:text-6xl font-black leading-[0.95] tracking-tight uppercase"
             >
-              {["Tu estilo", "elevado", "al siguiente", "nivel."].map(
+              {["Tu mejor", "versión", "empieza", "aqui."].map(
                 (line, index) => (
                   <motion.span
                     key={line}
