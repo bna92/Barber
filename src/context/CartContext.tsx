@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Product } from "../types/product";
+import { getUnitPrice } from "../utils/pricing";
 
 type CartItem = Product & {
   quantity: number;
@@ -71,7 +72,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const total = cart.reduce(
-    (sum, item) => sum + item.precio * item.quantity,
+    (sum, item) => sum + getUnitPrice(item, item.quantity) * item.quantity,
     0
   );
 

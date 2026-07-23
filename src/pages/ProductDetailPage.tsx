@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import { db } from "../services/firebase";
 import { Product } from "../types/product";
 import { useCart } from "../context/CartContext";
+import { tieneMayoreo } from "../utils/pricing";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -253,6 +254,12 @@ export default function ProductDetailPage() {
                   <p className="text-4xl md:text-5xl font-black text-neutral-950 mt-2">
                     ${product.precio}
                   </p>
+
+                  {tieneMayoreo(product) && (
+                    <p className="text-sm font-bold text-yellow-700 mt-2">
+                      Precio mayoreo: ${product.precioMayoreo} c/u comprando {product.cantidadMayoreo} o más piezas
+                    </p>
+                  )}
                 </div>
 
                 <button
@@ -282,15 +289,6 @@ export default function ProductDetailPage() {
                     </p>
                     <p className="text-xs text-neutral-500 mt-1">
                       Pedido por WhatsApp
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-                    <p className="text-sm font-bold text-neutral-950">
-                      Producto pro
-                    </p>
-                    <p className="text-xs text-neutral-500 mt-1">
-                      Seleccionado por expertos
                     </p>
                   </div>
                 </div>

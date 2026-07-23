@@ -27,6 +27,8 @@ export default function AdminProductsPage() {
     id: "",
     nombre: "",
     precio: 0,
+    precioMayoreo: 0,
+    cantidadMayoreo: 0,
     descripcion: "",
     imagen: "",
     inStock: true,
@@ -100,6 +102,8 @@ export default function AdminProductsPage() {
     await setDoc(doc(db, "productos", newProduct.id), {
       nombre: newProduct.nombre,
       precio: Number(newProduct.precio),
+      precioMayoreo: Number(newProduct.precioMayoreo),
+      cantidadMayoreo: Number(newProduct.cantidadMayoreo),
       descripcion: newProduct.descripcion,
       imagen: newProduct.imagen,
       inStock: newProduct.inStock,
@@ -116,6 +120,8 @@ export default function AdminProductsPage() {
       id: "",
       nombre: "",
       precio: 0,
+      precioMayoreo: 0,
+      cantidadMayoreo: 0,
       descripcion: "",
       imagen: "",
       inStock: true,
@@ -163,6 +169,8 @@ export default function AdminProductsPage() {
     await updateDoc(productRef, {
       nombre: product.nombre,
       precio: Number(product.precio),
+      precioMayoreo: Number(product.precioMayoreo) || 0,
+      cantidadMayoreo: Number(product.cantidadMayoreo) || 0,
       descripcion: product.descripcion,
       categoria:
         product.categoria.charAt(0).toUpperCase() +
@@ -254,7 +262,7 @@ export default function AdminProductsPage() {
         </div>
 
         <p className="text-neutral-600 mb-8">
-          Edita nombre, imagen, precio, descripción, categoría, disponibilidad y estado.
+          Edita nombre, imagen, precio, precio mayoreo, descripción, categoría, disponibilidad y estado.
         </p>
 
 
@@ -297,6 +305,44 @@ export default function AdminProductsPage() {
                     setNewProduct({
                       ...newProduct,
                       precio: Number(e.target.value),
+                    })
+                  }
+                  className="w-full border border-neutral-200 rounded-xl px-4 py-3"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-neutral-700 mb-2">
+                  Precio mayoreo (opcional)
+                </label>
+
+                <input
+                  type="number"
+                  placeholder="Precio mayoreo"
+                  value={newProduct.precioMayoreo}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      precioMayoreo: Number(e.target.value),
+                    })
+                  }
+                  className="w-full border border-neutral-200 rounded-xl px-4 py-3"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-neutral-700 mb-2">
+                  Cantidad mínima para mayoreo
+                </label>
+
+                <input
+                  type="number"
+                  placeholder="Ej. 6"
+                  value={newProduct.cantidadMayoreo}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      cantidadMayoreo: Number(e.target.value),
                     })
                   }
                   className="w-full border border-neutral-200 rounded-xl px-4 py-3"
@@ -453,6 +499,42 @@ export default function AdminProductsPage() {
                         handleChange(
                           product.id,
                           "precio",
+                          Number(e.target.value),
+                        )
+                      }
+                      className="mt-1 w-full border border-neutral-200 rounded-xl px-4 py-3 outline-none focus:border-yellow-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-bold text-neutral-700">
+                      Precio mayoreo
+                    </label>
+                    <input
+                      type="number"
+                      value={product.precioMayoreo ?? 0}
+                      onChange={(e) =>
+                        handleChange(
+                          product.id,
+                          "precioMayoreo",
+                          Number(e.target.value),
+                        )
+                      }
+                      className="mt-1 w-full border border-neutral-200 rounded-xl px-4 py-3 outline-none focus:border-yellow-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-bold text-neutral-700">
+                      Cantidad mínima para mayoreo
+                    </label>
+                    <input
+                      type="number"
+                      value={product.cantidadMayoreo ?? 0}
+                      onChange={(e) =>
+                        handleChange(
+                          product.id,
+                          "cantidadMayoreo",
                           Number(e.target.value),
                         )
                       }

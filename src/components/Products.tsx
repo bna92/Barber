@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { db } from "../services/firebase";
 import { Product } from "../types/product";
 import { useCart } from "../context/CartContext";
+import { tieneMayoreo } from "../utils/pricing";
 
 const PRODUCTS_PER_PAGE = 16;
 
@@ -205,6 +206,12 @@ export default function Products() {
                       <p className="text-lg md:text-xl font-black text-neutral-950 leading-tight">
                         ${product.precio}
                       </p>
+
+                      {tieneMayoreo(product) && (
+                        <p className="text-xs font-bold text-yellow-700 mt-1">
+                          Mayoreo: ${product.precioMayoreo} c/u ({product.cantidadMayoreo}+ pzas)
+                        </p>
+                      )}
                     </div>
 
                     <motion.button

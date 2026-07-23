@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { getUnitPrice, tieneMayoreo } from "../utils/pricing";
 
 export default function CartPage() {
   const {
@@ -25,14 +26,17 @@ export default function CartPage() {
 
   const subtotal = total;
   const totalFinal = total;
-  const whatsappNumber = "526671505736";
+  const whatsappNumber = "5216673220272";
 
   const handleWhatsAppOrder = () => {
     const orderDetails = cart
-      .map(
-        (item) =>
-          `• ${item.nombre}\nCantidad: ${item.quantity}\nPrecio: $${item.precio}`,
-      )
+      .map((item) => {
+        const unitPrice = getUnitPrice(item, item.quantity);
+
+        return `• ${item.nombre}\nCantidad: ${item.quantity}\nPrecio: $${unitPrice}${
+          tieneMayoreo(item) && unitPrice === item.precioMayoreo ? " (mayoreo)" : ""
+        }`;
+      })
       .join("\n\n");
 
     const message = `
@@ -146,8 +150,16 @@ Quedo atento(a) a la confirmación.
                         </p>
 
                         <p className="text-neutral-950 font-black text-xl mt-3">
-                          ${item.precio}
+                          ${getUnitPrice(item, item.quantity)}
                         </p>
+
+                        {tieneMayoreo(item) && (
+                          <p className="text-xs font-bold text-yellow-700 mt-1">
+                            {getUnitPrice(item, item.quantity) === item.precioMayoreo
+                              ? "Precio mayoreo aplicado"
+                              : `Mayoreo: $${item.precioMayoreo} c/u (${item.cantidadMayoreo}+ pzas)`}
+                          </p>
+                        )}
 
                         <div className="flex flex-wrap items-center gap-3 mt-4">
                           <button
@@ -220,7 +232,7 @@ Quedo atento(a) a la confirmación.
                           </div>
 
                           <p className="font-black text-neutral-950">
-                            ${(item.precio * item.quantity).toFixed(2)}
+                            ${(getUnitPrice(item, item.quantity) * item.quantity).toFixed(2)}
                           </p>
                         </div>
                       ))}
