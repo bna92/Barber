@@ -1,0 +1,47 @@
+rules_version = '2';
+
+// Reglas recomendadas para el proyecto barberia-panel.
+//
+// Este archivo NO se aplica solo — hay que desplegarlo manualmente:
+//   firebase deploy --only firestore:rules
+// o pegar su contenido en Firebase Console > Firestore Database > Reglas.
+//
+// Lo que hace:
+// - Lectura pública en las colecciones que alimentan el sitio (necesario para
+//   que Home, Productos, Hero, Servicios, Galería y TikTok carguen sin login).
+// - Escritura (crear/editar/borrar) solo permitida a un usuario autenticado,
+//   que es lo que ya asume el panel de administración (ProtectedRoute).
+// - Todo lo demás queda bloqueado por defecto.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /productos/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /hero/{slideId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /services/{serviceId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /gallery/{imageId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /tiktok_videos/{videoId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

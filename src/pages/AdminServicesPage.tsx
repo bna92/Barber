@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   collection,
   getDocs,
+  getDoc,
   updateDoc,
   doc,
   query,
@@ -9,18 +10,36 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
-import { db } from "../services/firebase";
+import { auth, db } from "../services/firebase";
 import { Service } from "../types/service";
 
 const cloudName = "df7in528r";
 const uploadPreset = "barberia_unsigned";
 
 export default function AdminServicesPage() {
+  const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<Record<string, "dirty" | "saved">>({});
+
+  const hasUnsavedChanges = Object.values(saveStatus).some(
+    (status) => status === "dirty",
+  );
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!hasUnsavedChanges) return;
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   const [newService, setNewService] = useState({
     id: "",
@@ -59,6 +78,8 @@ export default function AdminServicesPage() {
         service.id === id ? { ...service, [field]: value } : service,
       ),
     );
+
+    setSaveStatus((prev) => ({ ...prev, [id]: "dirty" }));
   };
 
   const handleUploadImage = async (
@@ -126,6 +147,15 @@ export default function AdminServicesPage() {
         return;
       }
 
+      const existing = await getDoc(doc(db, "services", newService.id));
+
+      if (existing.exists()) {
+        alert(
+          `Ya existe un servicio con el ID "${newService.id}". Usa otro ID distinto.`,
+        );
+        return;
+      }
+
       await setDoc(doc(db, "services", newService.id), {
         title: newService.title,
         price: newService.price,
@@ -166,6 +196,8 @@ export default function AdminServicesPage() {
         order: Number(service.order),
       });
 
+      setSaveStatus((prev) => ({ ...prev, [service.id]: "saved" }));
+
       alert("Servicio actualizado correctamente");
     } catch (error) {
       console.error("Error actualizando servicio:", error);
@@ -185,6 +217,20 @@ export default function AdminServicesPage() {
     alert("Servicio eliminado correctamente");
   };
 
+  const handleLogout = async () => {
+    if (
+      hasUnsavedChanges &&
+      !confirm(
+        "Tienes cambios sin guardar. ¿Seguro que quieres cerrar sesión sin guardarlos?",
+      )
+    ) {
+      return;
+    }
+
+    await signOut(auth);
+    navigate("/admin/login");
+  };
+
   if (loading) {
     return (
       <main className="min-h-screen bg-[#faf7f2] p-8">
@@ -198,6 +244,16 @@ export default function AdminServicesPage() {
       <div className="max-w-[1200px] mx-auto">
         <Link
           to="/admin"
+          onClick={(e) => {
+            if (
+              hasUnsavedChanges &&
+              !confirm(
+                "Tienes cambios sin guardar. ¿Seguro que quieres salir sin guardarlos?",
+              )
+            ) {
+              e.preventDefault();
+            }
+          }}
           className="inline-flex items-center gap-2 mb-6 text-neutral-700 hover:text-yellow-700 font-bold transition"
         >
           ← Volver al panel
@@ -211,12 +267,29 @@ export default function AdminServicesPage() {
           Agrega, edita, oculta o elimina los servicios de la página principal.
         </p>
 
-        <button
-          onClick={() => setShowCreateForm(!showCreateForm)}
-          className="mb-6 bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition"
-        >
-          {showCreateForm ? "Cancelar" : "Agregar servicio"}
-        </button>
+        <div className="flex flex-wrap gap-3 mb-6">
+          <button
+            onClick={() => {
+              if (!showCreateForm) {
+                const nextOrder = services.length
+                  ? Math.max(...services.map((s) => s.order)) + 1
+                  : 0;
+                setNewService((prev) => ({ ...prev, order: nextOrder }));
+              }
+              setShowCreateForm(!showCreateForm);
+            }}
+            className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition"
+          >
+            {showCreateForm ? "Cancelar" : "Agregar servicio"}
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="bg-white border border-neutral-200 text-neutral-950 px-6 py-3 rounded-full font-bold hover:border-red-500 hover:text-red-600 transition"
+          >
+            Cerrar sesión
+          </button>
+        </div>
 
         {showCreateForm && (
           <div className="bg-white border border-neutral-200 rounded-3xl p-5 md:p-6 shadow-lg shadow-black/5 mb-8">
@@ -465,20 +538,36 @@ export default function AdminServicesPage() {
                     />
                   </div>
 
-                  <div className="md:col-span-2 flex flex-col sm:flex-row justify-end gap-3">
-                    <button
-                      onClick={() => handleDelete(service.id)}
-                      className="bg-red-600 text-white px-6 py-3 rounded-full font-bold hover:bg-red-700 transition"
-                    >
-                      Eliminar servicio
-                    </button>
+                  <div className="md:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      {saveStatus[service.id] === "dirty" && (
+                        <p className="text-sm font-bold text-neutral-400">
+                          Cambios sin guardar
+                        </p>
+                      )}
 
-                    <button
-                      onClick={() => handleSave(service)}
-                      className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition"
-                    >
-                      Guardar cambios
-                    </button>
+                      {saveStatus[service.id] === "saved" && (
+                        <p className="text-sm font-bold text-green-600">
+                          ✓ Cambios guardados
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => handleDelete(service.id)}
+                        className="bg-red-600 text-white px-6 py-3 rounded-full font-bold hover:bg-red-700 transition"
+                      >
+                        Eliminar servicio
+                      </button>
+
+                      <button
+                        onClick={() => handleSave(service)}
+                        className="bg-neutral-950 text-white px-6 py-3 rounded-full font-bold hover:bg-yellow-600 transition"
+                      >
+                        Guardar cambios
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
